@@ -1,4 +1,3 @@
-import { styled, useTheme } from "@mui/material/styles";
 import {
   Box,
   Grid,
@@ -11,7 +10,6 @@ import {
 import { open_database, open_gallery } from "assets/svgs";
 
 export function Advanced() {
-  const theme = useTheme();
   return (
     <Box px="2" pt="20">
       <Center maxW="container.lg" minH="600" mx="auto" pb="8">
@@ -22,9 +20,7 @@ export function Advanced() {
             <Text gutterBottom>Advanced Self Destruct PIN</Text>
             <Text sx={{ marginBottom: "25px" }}>
               The Self-Destruct PIN is a feature to{" "}
-              <span style={{ color: theme.palette.warning.main }}>
-                help keep you safe.
-              </span>
+              <span style={{ color: "violet.500" }}>help keep you safe.</span>
               <br />
               Choose up to 15 images from your camera roll or select from our
               pre-existing list.
@@ -40,28 +36,28 @@ export function Advanced() {
             </Button>
             <SimpleGrid container rowSpacing="8px" columnSpacing="8px">
               <Grid item xs={3}>
-                <ImgWrapper></ImgWrapper>
+                <Box></Box>
               </Grid>
               <Grid item xs={3}>
-                <ImgWrapper></ImgWrapper>
+                <Box></Box>
               </Grid>
               <Grid item xs={3}>
-                <ImgWrapper></ImgWrapper>
+                <Box></Box>
               </Grid>
               <Grid item xs={3}>
-                <ImgWrapper></ImgWrapper>
+                <Box></Box>
               </Grid>
               <Grid item xs={3}>
-                <ImgWrapper></ImgWrapper>
+                <Box></Box>
               </Grid>
               <Grid item xs={3}>
-                <ImgWrapper></ImgWrapper>
+                <Box></Box>
               </Grid>
               <Grid item xs={3}>
-                <ImgWrapper></ImgWrapper>
+                <Box></Box>
               </Grid>
               <Grid item xs={3}>
-                <ImgWrapper></ImgWrapper>
+                <Box></Box>
               </Grid>
             </SimpleGrid>
             <Stack
@@ -82,28 +78,28 @@ export function Advanced() {
             </Button>
             <SimpleGrid container rowSpacing="8px" columnSpacing="8px">
               <Grid item xs={3}>
-                <ImgWrapper></ImgWrapper>
+                <Box></Box>
               </Grid>
               <Grid item xs={3}>
-                <ImgWrapper></ImgWrapper>
+                <Box></Box>
               </Grid>
               <Grid item xs={3}>
-                <ImgWrapper></ImgWrapper>
+                <Box></Box>
               </Grid>
               <Grid item xs={3}>
-                <ImgWrapper></ImgWrapper>
+                <Box></Box>
               </Grid>
               <Grid item xs={3}>
-                <ImgWrapper></ImgWrapper>
+                <Box></Box>
               </Grid>
               <Grid item xs={3}>
-                <ImgWrapper></ImgWrapper>
+                <Box></Box>
               </Grid>
               <Grid item xs={3}>
-                <ImgWrapper></ImgWrapper>
+                <Box></Box>
               </Grid>
               <Grid item xs={3}>
-                <ImgWrapper></ImgWrapper>
+                <Box></Box>
               </Grid>
             </SimpleGrid>
             <Stack
@@ -121,8 +117,3 @@ export function Advanced() {
     </Box>
   );
 }
-const ImgWrapper = styled(Box)(() => ({
-  height: 76,
-  borderRadius: "2px",
-  backgroundColor: "#C4C4C4",
-}));

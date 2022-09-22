@@ -58,7 +58,7 @@ export const PublicRoutes = () => {
       <Nav />
       <Routes>
         {/* onboarding */}
-        <Route path="/" element={<Navigate to="home" />} />
+        <Route path="/" element={<Home />} />
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/key-management" element={<KeyManagement />} />
         <Route path="/key-phrase-save" element={<KeyPhraseSave />} />
@@ -100,7 +100,7 @@ export const PublicRoutes = () => {
         <Route path="/setting/advanced" element={<Advanced />} />
         <Route path="/setting" element={<Setting />} />
 
-        <Route path="/home" element={<Home />} />
+        <Route path="/home" element={<Navigate to="/" />} />
         <Route path="/mapbox" element={<MapBox />} />
         <Route path="/mapbox/:screen" element={<MapBox />} />
 
