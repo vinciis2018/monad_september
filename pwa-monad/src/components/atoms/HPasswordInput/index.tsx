@@ -15,20 +15,7 @@ interface IPropsType {
 }
 
 const HPasswordInput = React.forwardRef<ReactCodeInput | null, IPropsType>(
-  (
-    {
-      password = "",
-      onChange,
-      onComplete,
-      onFocus,
-      label = "",
-      labelAlign = "center",
-      focused = true,
-      type = "",
-      autoFocus,
-    },
-    ref
-  ) => {
+  ({ onChange, onComplete }, ref) => {
     // const [code, setCode] = useState("");
     const [textType, setTextType] = useState("password");
 
@@ -57,7 +44,7 @@ const HPasswordInput = React.forwardRef<ReactCodeInput | null, IPropsType>(
           name={""}
           inputMode={"tel"}
           onChange={onEditPin}
-          autoFocus={autoFocus}
+          // autoFocus={autoFocus}
           ref={ref}
         />
       </Box>

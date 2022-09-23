@@ -24,6 +24,7 @@ export function KeyPhraseSave() {
   const { mnemonics, isLoading } = useWallet();
 
   const onClick = async () => {
+    // console.log(mnemonics);
     navigate("/key-confirm");
   };
 

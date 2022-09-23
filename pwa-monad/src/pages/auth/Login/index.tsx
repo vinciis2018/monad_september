@@ -23,7 +23,7 @@ export function Login() {
   const { login } = useLogin();
   const [err, setErr] = useState("");
   const [activeBtn, setActiveBtn] = useState(false);
-  const [pinFocus, setPinFocus] = useState(true);
+  // const [pinFocus, setPinFocus] = useState(true);
   const [pin, setPin] = useState("");
   const target = searchParams.get("target");
 
@@ -52,7 +52,7 @@ export function Login() {
           unlock(pincode)
             .then(async () => {
               const expired = Math.floor(Date.now() / 1000) + 10 * 60; // 10 mins
-              login(expired);
+              await login(expired);
               if (target) {
                 navigate("/" + target);
               } else {
@@ -83,9 +83,9 @@ export function Login() {
     }
   }, [navigate, userInfo]);
 
-  const activeFocusArea = () => {
-    setPinFocus(true);
-  };
+  // const activeFocusArea = () => {
+  //   setPinFocus(true);
+  // };
 
   const completedPin = (value: string) => {
     setActiveBtn(true);
@@ -131,7 +131,7 @@ export function Login() {
                   src={`https://cdna.iconscout.com/img/get-started.23be618.png?w=500&h=0&f=png`}
                 />
               </Tooltip>
-              <Box align="center" onClick={activeFocusArea}>
+              <Box align="center">
                 <hr />
                 <Text
                   textAlign="center"
@@ -147,7 +147,6 @@ export function Login() {
                   label="Enter Access PIN"
                   onChange={setPin}
                   onComplete={completedPin}
-                  focused={pinFocus}
                   labelAlign="center"
                 />
               </Box>

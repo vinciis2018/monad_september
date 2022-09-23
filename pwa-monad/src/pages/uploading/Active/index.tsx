@@ -103,14 +103,8 @@ export function Active() {
       setUsingCam(false);
       setShowKeyPhraseSaveModal(true);
     }
-  }, [
-    fileUrl,
-    setFileUrl,
-    userInfo,
-    usingCam,
-    navigate,
-    getArweavePublicAddress,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fileUrl, userInfo, usingCam, navigate]);
 
   const takePhoto = async () => {
     if (camera.current) {

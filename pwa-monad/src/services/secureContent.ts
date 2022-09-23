@@ -78,23 +78,28 @@ export async function encryptContentAndSave(
   await localforage.setItem(IV_KEY, iv);
 }
 
-export async function retrieveAndDecryptContent(
+export function retrieveAndDecryptContent(
   textPassword: string
 ): Promise<EncryptedDataModel> {
-  const key = await getKey(textPassword);
-  const [retrievedContent, retrievedIv] = await Promise.all([
-    localforage.getItem<ArrayBuffer | null>(SECURED_CONTENT_KEY),
-    localforage.getItem<ArrayBuffer | null>(IV_KEY),
-  ]);
-  if (retrievedContent && retrievedIv) {
-    return decrypt(retrievedContent, retrievedIv, key)
-      .then((decryptedContent) => decode<EncryptedDataModel>(decryptedContent))
-      .catch((e) => {
-        throw new Error(`${ERROR_IDS.INCORRECT_PIN}:${e}`);
-      });
-  } else {
-    throw new Error(`${ERROR_IDS.NO_CONTENT}`);
-  }
+  return getKey(textPassword).then((key) =>
+    Promise.all([
+      localforage.getItem<ArrayBuffer | null>(SECURED_CONTENT_KEY),
+      localforage.getItem<ArrayBuffer | null>(IV_KEY),
+    ]).then(([retrievedContent, retrievedIv]) => {
+      if (retrievedContent && retrievedIv) {
+        console.log(retrievedContent, retrievedIv, key);
+        return decrypt(retrievedContent, retrievedIv, key)
+          .then((decryptedContent) =>
+            decode<EncryptedDataModel>(decryptedContent)
+          )
+          .catch((e) => {
+            throw new Error(`${ERROR_IDS.INCORRECT_PIN}:${e}`);
+          });
+      } else {
+        throw new Error(ERROR_IDS.NO_CONTENT);
+      }
+    })
+  );
 }
 
 export async function clearSecureContent(): Promise<void> {

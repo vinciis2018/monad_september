@@ -14,7 +14,6 @@ import {
   getTemporarySavedPin,
   setPinSet,
   isPinSet,
-  encryptContentAndSave,
 } from "services";
 import { ERROR_IDS } from "utils/constants";
 import { WithChildren } from "types/utils";
@@ -22,7 +21,6 @@ import { WithChildren } from "types/utils";
 interface Context {
   mnemonics: string | undefined;
   isLoading: boolean;
-  getCommon: any;
 
   hasEncryptedData(): Promise<boolean>;
   generateAndSave(pin: string): Promise<void>;
@@ -60,36 +58,34 @@ export const ContextProvider = ({ children }: WithChildren) => {
     return _hasEncryptedData();
   };
 
-  const generateAndSave = async (pin: string): Promise<void> => {
+  const generateAndSave = (pin: string): Promise<void> => {
     setIsLoading(true);
     const $walletGenerate = WalletHelper.generateAndSave(pin, wallet);
+
     const $newJwk = $walletGenerate.then(({ jwk }) => jwk);
+
     set$jwk($newJwk);
 
     $walletGenerate.then(({ mnemonics }) => setMnemonics(mnemonics));
-    try {
-      await $newJwk;
-    } finally {
-      setIsLoading(false);
-    }
+    return $newJwk
+      .then(() => {})
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
-  const importAndSave = async (
-    pin: string,
-    mnemonics: string
-  ): Promise<void> => {
+  const importAndSave = (pin: string, mnemonics: string): Promise<void> => {
     setIsLoading(true);
     const $walletImport = WalletHelper.importAndSave(pin, mnemonics, wallet);
     set$jwk($walletImport);
-    // console.log($walletImport);
+
     setMnemonics(mnemonics);
 
-    try {
-      await $walletImport;
-      // console.log($walletImport);
-    } finally {
-      setIsLoading(false);
-    }
+    return $walletImport
+      .then(() => {})
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const tempSavePin = (pin: string): Promise<string> => {
@@ -117,43 +113,34 @@ export const ContextProvider = ({ children }: WithChildren) => {
   };
 
   const isUnlocked = async (): Promise<boolean> => {
-    const data = Boolean((await hasEncryptedData()) || $jwk);
-    if (data) {
-      setIsLoading(false);
-    } else {
-      setIsLoading(true);
-    }
-    return isLoading;
+    return Boolean((await hasEncryptedData()) || $jwk);
   };
 
-  const getCommon = () => {
-    return $jwk?.then((jwk) => jwk);
-  };
-
-  const unlock = async (pin: string): Promise<void> => {
+  const unlock = (pin: string): Promise<void> => {
     setIsLoading(true);
 
     const $walletLoad = retrieveAndDecryptContent(pin).then((dataModel) =>
-      WalletHelper.importWallet(dataModel.jwk, wallet).then(() => dataModel)
+      WalletHelper.importWallet(dataModel.jwk, wallet).then(() => {
+        // console.log(dataModel);
+        return dataModel;
+      })
     );
+    // console.log($walletLoad);
+
     set$jwk($walletLoad.then(({ jwk }) => jwk));
     $walletLoad.then(({ mnemonics }) => setMnemonics(mnemonics));
-    try {
-      try {
-        const res = await $walletLoad;
-        encryptContentAndSave({ jwk: res?.jwk, mnemonics }, pin).then(() => {});
-      } finally {
+    return $walletLoad
+      .then((res) => {
+        // console.log(res);
+      })
+      .finally(() => {
         setIsLoading(false);
-      }
-    } catch (e: any) {
-      return e;
-    }
+      });
   };
 
   const lock = (): void => {
     set$jwk(undefined);
     setMnemonics(undefined);
-    return;
   };
 
   const setSelfDestructPin = (destructPin: string): Promise<void> => {
@@ -161,13 +148,10 @@ export const ContextProvider = ({ children }: WithChildren) => {
   };
 
   const getArweavePublicAddress = (): string => {
-    // console.log(wallet);
-    // console.log(wallet.address!);
-
     return wallet.address!;
   };
 
-  const signMessage = async (message: string): Promise<string> => {
+  const signMessage = (message: string): Promise<string> => {
     const strBuffer = new TextEncoder().encode(message);
     if (!$jwk) {
       throw new Error(ERROR_IDS.WALLET_LOCKED);
@@ -181,13 +165,15 @@ export const ContextProvider = ({ children }: WithChildren) => {
     );
   };
 
-  const checkAndTriggerSelfDestruct = async (pin: string): Promise<boolean> => {
-    const destructPin = await retrieveSelfDestructPin();
-    const shouldTrigger = destructPin === pin;
-    if (shouldTrigger) {
-      await clearSecureContent();
-    }
-    return shouldTrigger;
+  const checkAndTriggerSelfDestruct = (pin: string): Promise<boolean> => {
+    return retrieveSelfDestructPin()
+      .then((destructPin) => destructPin === pin)
+      .then(async (shouldTrigger) => {
+        if (shouldTrigger) {
+          await clearSecureContent();
+        }
+        return shouldTrigger;
+      });
   };
 
   return (
@@ -195,7 +181,6 @@ export const ContextProvider = ({ children }: WithChildren) => {
       value={{
         mnemonics,
         isLoading,
-        getCommon,
         hasEncryptedData,
         generateAndSave,
         importAndSave,

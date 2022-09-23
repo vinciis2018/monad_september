@@ -92,13 +92,8 @@ export function Wallet(props: any) {
   // const {
   //   state: { connectFinnie, isLoading: finnieLoading, walletBalance, isFinnieConnected, walletPrice, xchangeRate, lastTxn, tokenHis },
   // } = useFinnie();
-  const {
-    getArweavePublicAddress,
-    hasEncryptedData,
-    isUnlocked,
-    getCommon,
-    isLoading,
-  } = useWallet();
+  const { getArweavePublicAddress, hasEncryptedData, isUnlocked, isLoading } =
+    useWallet();
 
   const redirect = props?.location?.search
     ? props?.location?.search.split("=")[1]
@@ -186,7 +181,6 @@ export function Wallet(props: any) {
     hasEncryptedData()
       .then((res) => {
         if (res) {
-          getCommon().then((jwk: any) => setWalletName(jwk));
           setEditWalletModalVisible(false);
           setAnftModalVisible(false);
           setTransferModalVisible(!transferModalVisible);

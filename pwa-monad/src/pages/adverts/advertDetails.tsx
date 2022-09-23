@@ -103,6 +103,7 @@ export function AdvertDetails(props: any) {
     : "/signin";
 
   const dispatch = useDispatch<any>();
+  // console.log(window.location.href.split("/").slice()[5]);
   React.useEffect(() => {
     if (reviewSuccess) {
       window.alert("Review submitted successfully");

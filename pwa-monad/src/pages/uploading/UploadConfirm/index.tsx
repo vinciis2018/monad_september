@@ -25,7 +25,7 @@ export function UploadConfirm() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const { addFile } = useIpfs();
-  const { getArweavePublicAddress, signMessage } = useWallet();
+  const { signMessage } = useWallet();
 
   const userSignin = useSelector((state: any) => state.userSignin);
   const { userInfo } = userSignin;
@@ -41,7 +41,7 @@ export function UploadConfirm() {
       dispatch(
         uploadMedia({
           cid: strCid,
-          owner: getArweavePublicAddress(),
+          owner: userInfo.defaultWallet,
           userId: userInfo._id,
         })
       );
@@ -53,7 +53,7 @@ export function UploadConfirm() {
             description,
             tags,
             nsfw,
-            owner: getArweavePublicAddress(),
+            owner: userInfo.defaultWallet,
             cid: strCid,
             cidSignature,
           })

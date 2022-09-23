@@ -116,16 +116,8 @@ export const Nav = () => {
       setWalletBalance(walletBalance);
       // });
     }
-  }, [
-    dispatch,
-    userInfo,
-    isLoading,
-    getArweavePublicAddress,
-    lock,
-    lockUser,
-    logoutUser,
-    walletBalance,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, userInfo, isLoading, getArweavePublicAddress, walletBalance]);
 
   const signoutHandler = () => {
     lockUser();
