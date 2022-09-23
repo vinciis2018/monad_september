@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import { useWallet } from "components/contexts";
+import { useWallet } from "components/contexts";
 import {
   Button,
   Flex,
@@ -21,22 +21,22 @@ import HLoading from "components/atoms/HLoading";
 export function Welcome() {
   const navigate = useNavigate();
 
-  // const { hasEncryptedData } = useWallet();
+  const { hasEncryptedData } = useWallet();
 
   const userSignin = useSelector((state: any) => state.userSignin);
   const { userInfo, loading, error } = userSignin;
 
   useEffect(() => {
-    // hasEncryptedData().then((hasData) => {
-    //   console.log(hasData);
-    //   if (hasData) {
-    //     // navigate("/login");
-    //   }
-    if (!userInfo) {
-      navigate("/signin");
-    }
-    // });
-  }, [navigate, userInfo]);
+    hasEncryptedData().then((hasData) => {
+      console.log(hasData);
+      if (hasData) {
+        // navigate("/login");
+      }
+      if (!userInfo) {
+        navigate("/signin");
+      }
+    });
+  }, [hasEncryptedData, navigate, userInfo]);
 
   const onClick = () => {
     navigate("/pin-create");

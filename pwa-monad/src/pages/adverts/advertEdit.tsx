@@ -50,7 +50,6 @@ import {
 import { detailsScreen } from "../../Actions/screenActions";
 
 import { useMedia } from "hooks";
-// import { useArtist } from "hooks";
 import { useWallet } from "components/contexts";
 
 import { MediaContainer } from "components/common";
@@ -73,14 +72,13 @@ import HLoading from "components/atoms/HLoading";
 import { getMyMedia } from "Actions/mediaActions";
 
 export function AdvertEdit(props: any) {
-  const tid = window.location.href.split("/").slice()[4];
+  const txId = window.location.href.split("/").slice()[5];
   const videoId = window.location.href.split("/").slice()[4];
-  const screenId = window.location.href.split("/").slice()[5];
+  const screenId = window.location.href.split("/").slice()[6];
 
   const navigate = useNavigate();
 
-  const [txId, setTxId] = React.useState<any>(tid);
-  const { data: nft, isLoading, isError } = useMedia({ id: txId });
+  const { data: media, isLoading, isError } = useMedia({ id: txId });
 
   const { isLoading: isWalletLoading } = useWallet();
 
@@ -221,7 +219,6 @@ export function AdvertEdit(props: any) {
       });
       dispatch(getVideoDetails(videoId));
     } else {
-      setTxId(video.video.split("/").slice(-1)[0]);
       setTitle(video.title);
       setThumbnail(thumbnail || video.thumbnail);
       setAdvert(advert || video.video);
@@ -472,7 +469,7 @@ export function AdvertEdit(props: any) {
                             <Text p="1" fontSize="xs" fontWeight="600" color="">
                               Advert for "{video?.title}" Ad Campaign
                             </Text>
-                            <MediaContainer nft={nft} />
+                            <MediaContainer media={media} />
                             <Text
                               onClick={() =>
                                 setMediaUploadModal(!mediaUploadModal)
