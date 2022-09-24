@@ -1,4 +1,7 @@
 import {
+  SEND_MAIL_FAIL,
+  SEND_MAIL_REQUEST,
+  SEND_MAIL_SUCCESS,
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
@@ -117,6 +120,19 @@ export function userVideosReducer(state = { videos: [] }, action) {
     case USER_VIDEOS_SUCCESS:
       return { loading: false, videos: action.payload };
     case USER_VIDEOS_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}
+
+export function mailSendReducer(state = {}, action) {
+  switch (action.type) {
+    case SEND_MAIL_REQUEST:
+      return { loading: true };
+    case SEND_MAIL_SUCCESS:
+      return { loading: false, data: action.payload };
+    case SEND_MAIL_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

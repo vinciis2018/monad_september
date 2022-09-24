@@ -56,7 +56,7 @@ export function Login() {
               if (target) {
                 navigate("/" + target);
               } else {
-                navigate("/upload");
+                navigate("/setting");
               }
             })
             .catch((error: Error) => {
@@ -101,8 +101,8 @@ export function Login() {
           <MessageBox variant="danger">{error}</MessageBox>
         ) : (
           <Stack align="center" p="8" rounded="lg" shadow="card">
-            {userInfo?.defaultWallet === undefined ||
-              (null && <Text color="black.500">{userInfo.defaultWallet}</Text>)}
+            {/* {userInfo?.defaultWallet === undefined ||
+              (null && <Text color="black.500">{userInfo.defaultWallet}</Text>)} */}
             {err && <MessageBox variant="danger">{err}</MessageBox>}
             <Stack>
               <Text

@@ -24,7 +24,6 @@ export const AUTH_ROUTES: string[] = [
   "/key-phrase-save",
   "/key-confirm",
   "/key-recovery",
-  "/userProfile/:id/:wallet",
 ];
 
 export const NO_AUTH_ROUTES: string[] = [
@@ -37,6 +36,7 @@ export const NO_AUTH_ROUTES: string[] = [
   "/home",
   "/screens",
   "/adverts",
+  "/userProfile/:id/:wallet",
 ];
 
 export const MNEMONICS_STUB: string = Array(12).fill("XXXX").join(" ");

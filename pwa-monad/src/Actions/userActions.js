@@ -1,5 +1,8 @@
 import Axios from "axios";
 import {
+  SEND_MAIL_FAIL,
+  SEND_MAIL_REQUEST,
+  SEND_MAIL_SUCCESS,
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
@@ -264,6 +267,37 @@ export const userVideosList = (user) => async (dispatch, getState) => {
     // console.log(error);
     dispatch({
       type: USER_VIDEOS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const sendMail = (mail) => async (dispatch, getState) => {
+  dispatch({
+    type: SEND_MAIL_REQUEST,
+    payload: mail,
+  });
+  const {
+    userSignin: { userInfo },
+  } = getState();
+  try {
+    const { data } = await Axios.post(
+      `${process.env.REACT_APP_BLINDS_SERVER}/api/users/send/mail`,
+      mail,
+      {
+        headers: { Authorization: "Bearer " + userInfo.token },
+      }
+    );
+    dispatch({
+      type: SEND_MAIL_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: SEND_MAIL_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

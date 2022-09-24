@@ -50,7 +50,7 @@ const ContextProvider = ({ children }: WithChildren) => {
       })
       .then(async (status) =>
         isSeedPhraseSaved().then((isSaved) => {
-          // console.log("status", status);
+          console.log("status", status);
           if (status.state === "granted" && !isSaved) {
             registerSeedPhraseSaveReminder(MNENONIC_SAVE_REMINDER_INTERVAL);
           }
@@ -93,13 +93,9 @@ const ContextProvider = ({ children }: WithChildren) => {
   };
 
   useEffect(() => {
-    // console.log(user);
     if (user) {
-      // console.log(user);
       const expired = user.expired;
-      // console.log(expired);
       const current = Math.floor(Date.now() / 1000);
-      // console.log(current);
       if (current - Number(expired) < 0 && isUnlocked()) {
         if (AUTH_ROUTES.includes(pathname)) {
           const expired = Math.floor(Date.now() / 1000) + 10 * 60; // 10 mins
@@ -110,10 +106,9 @@ const ContextProvider = ({ children }: WithChildren) => {
         } else {
           if (pathname === "/login") {
             const target = searchParams.get("target");
-            // console.log(target);
             if (target) return;
           }
-          navigate("/upload");
+          // navigate("/upload");
         }
       } else {
         if (AUTH_ROUTES.includes(pathname)) {
@@ -122,14 +117,13 @@ const ContextProvider = ({ children }: WithChildren) => {
       }
     } else {
       if (AUTH_ROUTES.includes(pathname)) {
-        navigate(pathname);
+        // navigate("/");
       }
     }
     /* eslint-disable-next-line */
   }, [pathname]);
 
   useEffect(() => {
-    // console.log(user);
     if (user) {
       const expired = user.expired;
       const current = Math.floor(Date.now() / 1000);
@@ -144,7 +138,6 @@ const ContextProvider = ({ children }: WithChildren) => {
 
   useEffect(() => {
     isPinSetup().then((hasData) => {
-      // console.log(hasData);
       if (!hasData) {
         navigate("/welcome");
       }
@@ -154,21 +147,20 @@ const ContextProvider = ({ children }: WithChildren) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const login = async (expired: number) => {
+  const loginUser = async (expired: number) => {
     // check user verification and send message to service worker
-    // console.log({ ...user });
     return setUser({ ...user, expired });
   };
 
-  const register = async (expired: number) => {
+  const registerUser = async (expired: number) => {
     return setUser({ expired });
   };
 
-  const logout = () => {
+  const logoutUser = () => {
     clearUser();
   };
 
-  const lock = () => {
+  const lockUser = () => {
     setUser({
       ...user,
       expired: Math.floor((Date.now() - 2000) / 1000),
@@ -179,10 +171,10 @@ const ContextProvider = ({ children }: WithChildren) => {
     <Ctx.Provider
       value={{
         user,
-        login,
-        register,
-        logout,
-        lock,
+        login: loginUser,
+        register: registerUser,
+        logout: logoutUser,
+        lock: lockUser,
         setSeedPhraseSaved,
       }}
     >

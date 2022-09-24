@@ -22,9 +22,9 @@ export function KeyPhraseSave() {
   const { setShowBackup } = useBackup();
   const [showKeys, setShowKeys] = useState<boolean>(false);
   const { mnemonics, isLoading } = useWallet();
+  // console.log(mnemonics);
 
   const onClick = async () => {
-    // console.log(mnemonics);
     navigate("/key-confirm");
   };
 

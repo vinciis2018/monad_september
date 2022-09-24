@@ -2,6 +2,7 @@ import { createStore, compose, applyMiddleware, combineReducers } from "redux";
 import thunk from "redux-thunk";
 
 import {
+  mailSendReducer,
   userDetailsReducer,
   userListReducer,
   userScreensReducer,
@@ -91,6 +92,7 @@ const reducer = combineReducers({
   userList: userListReducer,
   userScreens: userScreensReducer,
   userVideos: userVideosReducer,
+  mailSend: mailSendReducer,
 
   walletCreate: walletCreateReducer,
   walletEdit: walletEditReducer,

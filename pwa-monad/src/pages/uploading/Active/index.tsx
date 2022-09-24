@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState, useRef } from "react";
-import { isSeedPhraseSaved } from "services";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -13,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 import { Camera } from "react-camera-pro";
 
-import { KeyPhraseSaveModal } from "components/modals/KeyPhraseSaveModal";
 import { useUpload, useWallet } from "components/contexts";
 import { useDropzone } from "react-dropzone";
 
@@ -39,8 +37,6 @@ export function Active() {
   const { fileUrl, setFileUrl, setThumb, fileType, setFileType } = useUpload();
   const camera = useRef<CameraType>(null);
   const [facingMode, setFacingMode] = useState<FacingMode>("environment");
-  const [showKeyPhraseSaveModal, setShowKeyPhraseSaveModal] =
-    useState<boolean>(false);
 
   const [uploader, setUploader] = useState<Boolean>(false);
   const [usingCam, setUsingCam] = useState<Boolean>(false);
@@ -80,10 +76,6 @@ export function Active() {
     // maxSize: 15728640,
   });
 
-  const handleCloseModal = () => {
-    setShowKeyPhraseSaveModal(false);
-  };
-
   const userSignin = useSelector((state: any) => state.userSignin);
   const { userInfo, loading: loadingUser, error: errorUser } = userSignin;
 
@@ -91,17 +83,12 @@ export function Active() {
     if (!getArweavePublicAddress()) {
       navigate("/login");
     }
-    isSeedPhraseSaved().then((visited) => {
-      setShowKeyPhraseSaveModal(!visited);
-    });
 
     if (fileUrl) {
       setUsingCam(true);
       setFileUrl(fileUrl);
-      setShowKeyPhraseSaveModal(false);
     } else {
       setUsingCam(false);
-      setShowKeyPhraseSaveModal(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fileUrl, userInfo, usingCam, navigate]);
@@ -121,12 +108,6 @@ export function Active() {
       : setFacingMode("user");
     if (camera.current) camera.current.switchCamera();
   };
-
-  const handleSecureMyAccountClick = useCallback(() => {
-    setShowKeyPhraseSaveModal(false);
-    // navigate.push("/key-phrase-save");
-    navigate("/key-phrase-save");
-  }, [navigate]);
 
   const clearData = (e: any) => {
     setState({
@@ -255,12 +236,6 @@ export function Active() {
               />
             </Tooltip>
           )}
-
-          <KeyPhraseSaveModal
-            onClose={handleCloseModal}
-            open={showKeyPhraseSaveModal}
-            onSecureMyAccountClick={handleSecureMyAccountClick}
-          />
         </Stack>
       </Center>
     </Box>

@@ -90,24 +90,8 @@ export const Nav = () => {
   } = userSignin;
 
   React.useEffect(() => {
-    // console.log("saksalslaskaslaas");
-    // console.log(getArweavePublicAddress());
-    // if (
-    //   userInfo?.defaultWallet ||
-    //   getArweavePublicAddress() !== userInfo?.defaultWallet
-    // ) {
-    //   dispatch(editWallet({ walletAdd: getArweavePublicAddress() }));
-    //   lockUser();
-    //   logoutUser();
-    //   lock();
-    // } else {
-    //   setMyWallet(getArweavePublicAddress());
-    // }
-    if (getArweavePublicAddress()) {
+    if (userInfo && getArweavePublicAddress() !== userInfo.defaultWallet) {
       dispatch(editWallet({ walletAdd: getArweavePublicAddress() }));
-      lockUser();
-      logoutUser();
-      lock();
     }
 
     if (!isLoading) {

@@ -19,7 +19,7 @@ import { ERROR_IDS } from "utils/constants";
 import { WithChildren } from "types/utils";
 
 interface Context {
-  mnemonics: string | undefined;
+  mnemonics: any;
   isLoading: boolean;
 
   hasEncryptedData(): Promise<boolean>;
@@ -47,7 +47,7 @@ export const ContextProvider = ({ children }: WithChildren) => {
   const [$jwk, set$jwk] = useState<Promise<JWKInterface> | undefined>(
     undefined
   );
-  const [mnemonics, setMnemonics] = useState<string | undefined>(undefined);
+  const [mnemonics, setMnemonics] = useState<any>(undefined);
   const [isLoading, setIsLoading] = useState(false);
 
   /**
@@ -61,9 +61,7 @@ export const ContextProvider = ({ children }: WithChildren) => {
   const generateAndSave = (pin: string): Promise<void> => {
     setIsLoading(true);
     const $walletGenerate = WalletHelper.generateAndSave(pin, wallet);
-
     const $newJwk = $walletGenerate.then(({ jwk }) => jwk);
-
     set$jwk($newJwk);
 
     $walletGenerate.then(({ mnemonics }) => setMnemonics(mnemonics));
@@ -120,21 +118,23 @@ export const ContextProvider = ({ children }: WithChildren) => {
     setIsLoading(true);
 
     const $walletLoad = retrieveAndDecryptContent(pin).then((dataModel) =>
-      WalletHelper.importWallet(dataModel.jwk, wallet).then(() => {
-        // console.log(dataModel);
-        return dataModel;
-      })
+      WalletHelper.importWallet(dataModel.jwk, wallet).then(() => dataModel)
     );
-    // console.log($walletLoad);
-
     set$jwk($walletLoad.then(({ jwk }) => jwk));
-    $walletLoad.then(({ mnemonics }) => setMnemonics(mnemonics));
+    setMnemonics($walletLoad.then(({ mnemonics }) => mnemonics));
+    // $walletLoad.then(({ mnemonics }) => {
+    //   setMnemonics(mnemonics);
+    // });
     return $walletLoad
       .then((res) => {
         // console.log(res);
+        // console.log(res.mnemonics);
+        setMnemonics(res.mnemonics);
+        // console.log(mnemonics);
       })
       .finally(() => {
         setIsLoading(false);
+        // console.log(mnemonics);
       });
   };
 

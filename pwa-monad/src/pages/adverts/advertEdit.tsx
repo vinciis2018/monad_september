@@ -217,7 +217,11 @@ export function AdvertEdit(props: any) {
       dispatch({
         type: ADVERT_UPDATE_RESET,
       });
-      dispatch(getVideoDetails(videoId));
+      navigate(
+        `/advert/${video._id}/${video?.video?.split("/").slice(-1)[0]}/${
+          video.screen
+        }`
+      );
     } else {
       setTitle(video.title);
       setThumbnail(thumbnail || video.thumbnail);
@@ -1670,7 +1674,7 @@ export function AdvertEdit(props: any) {
                       type="submit"
                       onClick={videoUpdateHandler}
                     >
-                      Proceed to Payment
+                      Upload Campaign
                     </Button>
                   </Stack>
                 )}
