@@ -119,7 +119,7 @@ export function Success() {
                 <Text fontSize="xs">
                   {linkType === "share"
                     ? `https://ipfs.io/ipfs/${mediaId}`
-                    : `<iframe width="100%" src=${media.userId} title="Monad Upload" frameborder="0" allowfullscreen></iframe>`}
+                    : `<iframe width="100%" src=${media.fileUrl} title="Monad Upload" frameborder="0" allowfullscreen></iframe>`}
                 </Text>
               </Box>
               <Button

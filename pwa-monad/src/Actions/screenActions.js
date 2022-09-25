@@ -571,7 +571,7 @@ export const applyScreenAllyPlea = (screenId) => async (dispatch, getState) => {
   try {
     const { data } = await Axios.post(
       `${process.env.REACT_APP_BLINDS_SERVER}/api/screens/${screenId}/allyPlea/ally`,
-      { screenId },
+      { screenId, userInfo },
       {
         headers: { Authorization: "Bearer " + userInfo.token },
       }

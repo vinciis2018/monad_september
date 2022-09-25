@@ -123,9 +123,7 @@ export function PleaBucket(props: any) {
                 </Text>
                 <hr />
                 {allPleas
-                  .filter(
-                    (myPlea: any) => myPlea.from === userInfo.defaultWallet
-                  )
+                  .filter((myPlea: any) => myPlea.from === userInfo._id)
                   .map((plea: any) => (
                     <Box
                       shadow="card"
@@ -196,7 +194,7 @@ export function PleaBucket(props: any) {
                 </Text>
                 <hr />
                 {allPleas
-                  .filter((myPlea: any) => myPlea.to === userInfo.defaultWallet)
+                  .filter((myPlea: any) => myPlea.to === userInfo._id)
                   .map((plea: any) => (
                     <Box
                       key={plea._id}

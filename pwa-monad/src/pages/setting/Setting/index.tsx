@@ -8,7 +8,7 @@ import { useLogin, useWallet } from "components/contexts";
 
 import { Box, Center, Flex, Stack, Text, Button } from "@chakra-ui/react";
 import { CopyableAddress } from "components/ui";
-import { AiOutlineArrowLeft, AiOutlineWallet, AiOutlineWarning } from "react-icons/ai"
+import { AiOutlineUpload, AiOutlineWallet, AiOutlineWarning } from "react-icons/ai"
 import { isPWA } from "utils/util";
 import { KeyPhraseSaveModal } from "components/modals/KeyPhraseSaveModal";
 import { isSeedPhraseSaved } from "services";
@@ -116,7 +116,7 @@ export function Setting() {
       <Center maxW="container.lg" pt="10" minH="600" mx="auto" pb="8">
           <Stack p="8" rounded="lg" shadow="card">
             <Flex p="4" justify="space-between" align="center">
-              <AiOutlineArrowLeft size="20px" color="black" onClick={() => navigate(`/upload`)} />
+              <AiOutlineUpload size="20px" color="black" onClick={() => navigate(`/upload`)} />
               <Text fontSize="lg" fontWeight="600" >
                 Wallet & Security
               </Text>

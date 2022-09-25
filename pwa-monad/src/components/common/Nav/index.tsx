@@ -32,20 +32,17 @@ import MessageBox from "components/atoms/MessageBox";
 import { useWindowSize } from "utils";
 
 import {
-  RiGlobeLine,
-  RiWallet3Line,
-  RiSearch2Line,
-  RiUserSmileLine,
-  RiAdvertisementLine,
-  RiLogoutBoxRLine,
-} from "react-icons/ri";
-import {
   AiOutlineFundProjectionScreen,
   AiOutlineSetting,
-  // AiOutlineCamera
+  AiOutlineWallet,
+  AiOutlineAim,
+  AiOutlinePicture,
+  AiOutlineBell,
+  AiOutlineUser,
+  AiOutlinePoweroff,
+  AiOutlineLogout,
+  AiOutlineSearch,
 } from "react-icons/ai";
-import { IoRemoveCircle } from "react-icons/io5";
-import { CgNotifications } from "react-icons/cg";
 
 import Logo from "assets/logo.png";
 import Name from "assets/name.png";
@@ -197,7 +194,7 @@ export const Nav = () => {
                         as={RouterLink}
                         to={`/mapbox`}
                         color="black"
-                        icon={<RiGlobeLine size="20px" />}
+                        icon={<AiOutlineAim size="20px" />}
                       >
                         Explore
                       </MenuItem>
@@ -213,7 +210,7 @@ export const Nav = () => {
                         as={RouterLink}
                         to={`/adverts`}
                         color="black"
-                        icon={<RiAdvertisementLine size="20px" />}
+                        icon={<AiOutlinePicture size="20px" />}
                       >
                         Adverts
                       </MenuItem>
@@ -221,7 +218,7 @@ export const Nav = () => {
                         as={RouterLink}
                         to={`/pleaBucket`}
                         color="black"
-                        icon={<CgNotifications size="20px" />}
+                        icon={<AiOutlineBell size="20px" />}
                       >
                         Notifications
                       </MenuItem>
@@ -231,7 +228,7 @@ export const Nav = () => {
                           userInfo._id
                         }/${getArweavePublicAddress()}`}
                         color="black"
-                        icon={<RiUserSmileLine size="20px" />}
+                        icon={<AiOutlineUser size="20px" />}
                       >
                         Profile
                       </MenuItem>
@@ -241,7 +238,7 @@ export const Nav = () => {
                           userInfo._id
                         }/${getArweavePublicAddress()}`}
                         color="black"
-                        icon={<RiWallet3Line size="20px" />}
+                        icon={<AiOutlineWallet size="20px" />}
                       >
                         Wallet
                       </MenuItem>
@@ -259,14 +256,14 @@ export const Nav = () => {
                       <MenuItem
                         onClick={lockWallet}
                         color="black"
-                        icon={<IoRemoveCircle size="20px" />}
+                        icon={<AiOutlinePoweroff size="20px" />}
                       >
                         Disconnect
                       </MenuItem>
                       <MenuItem
                         onClick={signoutHandler}
                         color="black"
-                        icon={<RiLogoutBoxRLine size="20px" />}
+                        icon={<AiOutlineLogout size="20px" />}
                       >
                         Logout
                       </MenuItem>
@@ -289,7 +286,7 @@ export const Nav = () => {
                               walletBalance?.ratData
                             : "wallet locked"}
                         </Text>
-                        <RiWallet3Line size="15px" color="black" />
+                        <AiOutlineWallet size="15px" color="black" />
                       </Flex>
                     </Badge>
                   ) : (
@@ -297,7 +294,7 @@ export const Nav = () => {
                       onClick={onWalletClick}
                       aria-label="Connect"
                       bg={isLoading ? "red.200" : "red.500"}
-                      icon={<RiWallet3Line color="black" size="20px" />}
+                      icon={<AiOutlineWallet color="black" size="20px" />}
                     />
                   )}
                 </Flex>
@@ -305,7 +302,7 @@ export const Nav = () => {
               <IconButton
                 as={RouterLink}
                 to={`/artist/${getArweavePublicAddress()}`}
-                icon={<RiSearch2Line size="20px" color="black" />}
+                icon={<AiOutlineSearch size="20px" color="black" />}
                 aria-label="search-what-you-are-looking-for"
                 bg="none"
                 rounded="sm"
@@ -382,7 +379,7 @@ export const Nav = () => {
                           shadow="card"
                           rounded="lg"
                         >
-                          <RiGlobeLine size="20px" />
+                          <AiOutlineAim size="20px" />
                           <Text p="2" fontWeight="600">
                             Explore
                           </Text>
@@ -408,7 +405,7 @@ export const Nav = () => {
                           shadow="card"
                           rounded="lg"
                         >
-                          <RiAdvertisementLine size="20px" />
+                          <AiOutlinePicture size="20px" />
                           <Text p="2" fontWeight="600">
                             Adverts
                           </Text>
@@ -421,7 +418,7 @@ export const Nav = () => {
                           shadow="card"
                           rounded="lg"
                         >
-                          <CgNotifications size="20px" />
+                          <AiOutlineBell size="20px" />
                           <Text p="2" fontWeight="600">
                             Notifications
                           </Text>
@@ -436,7 +433,7 @@ export const Nav = () => {
                           shadow="card"
                           rounded="lg"
                         >
-                          <RiUserSmileLine size="20px" />
+                          <AiOutlineUser size="20px" />
                           <Text p="2" fontWeight="600">
                             Profile
                           </Text>
@@ -451,7 +448,7 @@ export const Nav = () => {
                           shadow="card"
                           rounded="lg"
                         >
-                          <RiWallet3Line size="20px" />
+                          <AiOutlineWallet size="20px" />
                           <Text p="2" fontWeight="600">
                             Wallet
                           </Text>
@@ -480,7 +477,7 @@ export const Nav = () => {
                           shadow="card"
                           rounded="lg"
                         >
-                          <IoRemoveCircle size="20px" />
+                          <AiOutlinePoweroff size="20px" />
                           <Text p="2" fontWeight="600">
                             Disconnect
                           </Text>
@@ -492,7 +489,7 @@ export const Nav = () => {
                           shadow="card"
                           rounded="lg"
                         >
-                          <RiLogoutBoxRLine size="20px" />
+                          <AiOutlineLogout size="20px" />
                           <Text p="2" fontWeight="600">
                             LogOut
                           </Text>
@@ -586,7 +583,7 @@ export const Nav = () => {
                       onClick={loginHandler}
                       aria-label=""
                       bg={isLoading ? "red.200" : "red.500"}
-                      icon={<RiWallet3Line color="black" size="20px" />}
+                      icon={<AiOutlineWallet color="black" size="20px" />}
                     />
                   )}
                 </Stack>

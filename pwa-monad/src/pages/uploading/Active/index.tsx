@@ -16,7 +16,7 @@ import { useUpload, useWallet } from "components/contexts";
 import { useDropzone } from "react-dropzone";
 
 import {
-  AiOutlineArrowLeft,
+  AiOutlineHome,
   AiOutlineUpload,
   AiOutlineSetting,
 } from "react-icons/ai";
@@ -126,7 +126,7 @@ export function Active() {
       <Center maxW="container.lg" minH="600" mx="auto" pt="10" pb="8">
         <Stack p="8" rounded="lg" shadow="card">
           <Flex p="4" justify="space-between" align="center">
-            <AiOutlineArrowLeft
+            <AiOutlineHome
               size="20px"
               color="black"
               onClick={() => navigate(`/`)}
