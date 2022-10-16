@@ -9,9 +9,9 @@ import {
   GET_MY_MEDIA_FAIL,
   GET_MY_MEDIA_REQUEST,
   GET_MY_MEDIA_SUCCESS,
-  GET_MEDIA_THUMBNAIL_FAIL,
-  GET_MEDIA_THUMBNAIL_REQUEST,
-  GET_MEDIA_THUMBNAIL_SUCCESS,
+  GENERATE_VIDEO_FROM_IMAGES_FAIL,
+  GENERATE_VIDEO_FROM_IMAGES_REQUEST,
+  GENERATE_VIDEO_FROM_IMAGES_SUCCESS,
   MEDIA_UPLOAD_FAIL,
   MEDIA_UPLOAD_REQUEST,
   MEDIA_UPLOAD_SUCCESS,
@@ -156,29 +156,31 @@ export const getMyMedia = () => async (dispatch, getState) => {
   }
 };
 
-export const getMediaThumbnail = (media) => async (dispatch, getState) => {
-  dispatch({
-    type: GET_MEDIA_THUMBNAIL_REQUEST,
-    payload: media,
-  });
+export const generateVideoFromImages =
+  (images) => async (dispatch, getState) => {
+    dispatch({
+      type: GENERATE_VIDEO_FROM_IMAGES_REQUEST,
+      payload: images,
+    });
 
-  try {
-    const { data } = await Axios.post(
-      `${process.env.REACT_APP_BLINDS_SERVER}/api/media/${media.cid}/generateThumbnail`,
-      media
-    );
-    dispatch({
-      type: GET_MEDIA_THUMBNAIL_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-    dispatch({
-      type: GET_MEDIA_THUMBNAIL_FAIL,
-      payload: message,
-    });
-  }
-};
+    try {
+      const { data } = await Axios.post(
+        // `${process.env.REACT_APP_BLINDS_SERVER}/api/media/createVideoFromImages`,
+        `https://img2vdo.herokuapp.com/i2v`,
+        images
+      );
+      dispatch({
+        type: GENERATE_VIDEO_FROM_IMAGES_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      dispatch({
+        type: GENERATE_VIDEO_FROM_IMAGES_FAIL,
+        payload: message,
+      });
+    }
+  };

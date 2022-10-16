@@ -14,8 +14,6 @@ import {
   PhotoView,
   UploadConfirm,
   Success,
-  UploadTags,
-  UploadArchive,
   // auth
   Login,
   Logout,
@@ -49,6 +47,8 @@ import {
   UserDashboard,
   CampaignDashboard,
   PleaBucket,
+  CustomImages,
+  NFT,
 } from "pages";
 import { Nav, Footer } from "components/common";
 
@@ -75,10 +75,8 @@ export const PublicRoutes = () => {
         <Route path="/upload" element={<Active />} />
         <Route path="/upload-active" element={<Active />} />
         <Route path="/upload-photos" element={<PhotoView />} />
-        <Route path="/upload-tags" element={<UploadTags />} />
         <Route path="/upload-confirm" element={<UploadConfirm />} />
         <Route path="/upload-success/:cid" element={<Success />} />
-        <Route path="/upload-archive" element={<UploadArchive />} />
         {/* setting */}
         <Route path="/setting/wifi-test" element={<WifiTesting />} />
         <Route path="/setting/recovery" element={<Recovery />} />
@@ -136,6 +134,9 @@ export const PublicRoutes = () => {
         <Route path="/pleaBucket" element={<PleaBucket />} />
 
         {/* <Route path="/wallet/:id/:wallet" element={<Wallet />} /> */}
+        <Route path="/customImages" element={<CustomImages />} />
+
+        <Route path="/nft/:id" element={<NFT />} />
 
         <Route path="*" element={<Page404 />} />
       </Routes>

@@ -11,9 +11,7 @@ export { CameraHome } from "./uploading/CameraHome";
 export { Active } from "./uploading/Active";
 export { PhotoView } from "./uploading/PhotoView";
 export { Success } from "./uploading/Success";
-export { UploadTags } from "./uploading/UploadTags";
 export { UploadConfirm } from "./uploading/UploadConfirm";
-export { UploadArchive } from "./uploading/UploadArchive";
 
 // auth
 export { Login } from "./auth/Login";
@@ -36,6 +34,7 @@ export { Page404 } from "./404";
 
 export { Home } from "./home";
 export { MapBox } from "./map";
+export { NFT } from "./nft";
 
 export { Screens, ScreenDetails, ScreenEdit, ScreenPlayer } from "./screen";
 
@@ -46,3 +45,5 @@ export { UserProfile } from "./profile";
 export { PleaBucket } from "./pleas";
 
 export { UserDashboard, ScreenDashboard, CampaignDashboard } from "./dashboard";
+
+export { CustomImages } from "./custom";

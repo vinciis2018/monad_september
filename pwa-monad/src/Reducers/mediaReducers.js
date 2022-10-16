@@ -12,9 +12,9 @@ import {
   GET_ALL_MEDIA_FAIL,
   GET_ALL_MEDIA_SUCCESS,
   GET_ALL_MEDIA_REQUEST,
-  GET_MEDIA_THUMBNAIL_REQUEST,
-  GET_MEDIA_THUMBNAIL_SUCCESS,
-  GET_MEDIA_THUMBNAIL_FAIL,
+  GENERATE_VIDEO_FROM_IMAGES_REQUEST,
+  GENERATE_VIDEO_FROM_IMAGES_SUCCESS,
+  GENERATE_VIDEO_FROM_IMAGES_FAIL,
 } from "../Constants/mediaConstants";
 
 // upload Video
@@ -72,13 +72,13 @@ export function myMediaReducer(state = {}, action) {
   }
 }
 
-export function mediaThumbnailReducer(state = {}, action) {
+export function videoFromImagesReducer(state = {}, action) {
   switch (action.type) {
-    case GET_MEDIA_THUMBNAIL_REQUEST:
+    case GENERATE_VIDEO_FROM_IMAGES_REQUEST:
       return { loading: true };
-    case GET_MEDIA_THUMBNAIL_SUCCESS:
-      return { loading: false, thumbnail: action.payload };
-    case GET_MEDIA_THUMBNAIL_FAIL:
+    case GENERATE_VIDEO_FROM_IMAGES_SUCCESS:
+      return { loading: false, video: action.payload };
+    case GENERATE_VIDEO_FROM_IMAGES_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

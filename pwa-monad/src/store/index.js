@@ -18,11 +18,12 @@ import {
 import {
   allMediaReducer,
   mediaGetReducer,
-  mediaThumbnailReducer,
+  videoFromImagesReducer,
   mediaUploadReducer,
   myMediaReducer,
 } from "Reducers/mediaReducers";
 import {
+  playlistCheckReducer,
   screenAllyPleaGrantReducer,
   screenAllyPleaRejectReducer,
   screenAllyPleaRequestReducer,
@@ -85,6 +86,8 @@ const initialState = {
 };
 
 const reducer = combineReducers({
+  playlistCheck: playlistCheckReducer,
+
   userSignin: userSigninReducer,
   userSignup: userSignupReducer,
   userDetails: userDetailsReducer,
@@ -101,7 +104,7 @@ const reducer = combineReducers({
   mediaGet: mediaGetReducer,
   allMedia: allMediaReducer,
   myMedia: myMediaReducer,
-  mediaThumbnail: mediaThumbnailReducer,
+  videoFromImages: videoFromImagesReducer,
 
   screenList: screenListReducer,
   screenDetails: screenDetailsReducer,

@@ -364,3 +364,16 @@ export function screenAllyPleaGrantReducer(state = {}, action) {
       return state;
   }
 }
+
+export function playlistCheckReducer(state = {}, action) {
+  switch (action.type) {
+    case "CHECK_PLAYLIST_REQUEST":
+      return { loading: true };
+    case "CHECK_PLAYLIST_SUCCESS":
+      return { loading: false, data: action.payload };
+    case "CHECK_PLAYLIST_FAIL":
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}

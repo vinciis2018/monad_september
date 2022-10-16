@@ -50,6 +50,7 @@ import { Map } from "pages/map/Map";
 import { useWallet } from "components/contexts";
 import MessageBox from "components/atoms/MessageBox";
 import HLoading from "components/atoms/HLoading";
+import { getMyMedia } from "Actions/mediaActions";
 
 export function ScreenEdit(props: any) {
   const screenId = window.location.href.split("/").slice()[5];
@@ -146,6 +147,9 @@ export function ScreenEdit(props: any) {
     success: successScreenGameRemove,
   } = screenGameRemove;
 
+  const myMedia = useSelector((state: any) => state.myMedia);
+  const { loading: loadingMyMedia, error: errorMyMedia, medias } = myMedia;
+
   const redirect = props?.location?.search
     ? props?.location?.search.split("=")[1]
     : "/signin";
@@ -192,6 +196,11 @@ export function ScreenEdit(props: any) {
 
     if (successUpdate) {
       window.alert("Screen Updated successfully");
+      navigate(
+        `/screen/${screen._id}/${screen.image.split("/").slice(-1)[0]}/${
+          screen.activeGameContract
+        }`
+      );
     }
 
     if (successPinUpdate) {
@@ -214,6 +223,7 @@ export function ScreenEdit(props: any) {
     dispatch(getScreenCalender(screenId));
     // dispatch(getScreenGameDetails(screenId));
     // getMyNfts(userInfo.defaultWallet);
+    dispatch(getMyMedia());
   }, [
     dispatch,
     userInfo,
@@ -353,28 +363,32 @@ export function ScreenEdit(props: any) {
                   }
                 />
               </Box>
-              {isLoading ? (
-                <HLoading loading={isLoading} />
+              {loadingMyMedia ? (
+                <HLoading loading={loadingMyMedia} />
+              ) : errorMyMedia ? (
+                <MessageBox variant="danger">{errorMyMedia}</MessageBox>
               ) : (
                 <Stack align="center">
-                  {/* {!isLoading && artist?.nfts?.length !== 0 && (
+                  {!loadingMyMedia && medias?.length !== 0 && (
                     <FormControl p="2" id="image">
                       <Select
+                        color="black"
                         placeholder="screen image"
                         value={image}
                         onChange={(e) => setImage(e.target.value)}
                       >
-                        {artist?.nfts.map((nft: Record<string, any>) => (
+                        {medias?.map((nft: Record<string, any>) => (
                           <option
+                            color="black"
                             key={nft?.id}
-                            value={`https://arweave.net/${nft?.id}`}
+                            value={`https://ipfs.io/ipfs/${nft?.cid}`}
                           >
-                            {nft?.id}
+                            {nft?.cid}
                           </option>
                         ))}
                       </Select>
                     </FormControl>
-                  )} */}
+                  )}
                 </Stack>
               )}
               <Box shadow="card" p="2" rounded="lg">

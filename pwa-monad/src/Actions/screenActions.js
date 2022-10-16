@@ -56,7 +56,6 @@ import {
 } from "../Constants/screenConstants";
 
 // List screens
-
 export const listScreens =
   ({
     pageNumber = "",
@@ -89,7 +88,6 @@ export const listScreens =
   };
 
 // screen details
-
 export const detailsScreen = (screenId) => async (dispatch) => {
   dispatch({
     type: SCREEN_DETAILS_REQUEST,
@@ -115,7 +113,6 @@ export const detailsScreen = (screenId) => async (dispatch) => {
 };
 
 // screen create
-
 export const createScreen = () => async (dispatch, getState) => {
   dispatch({
     type: SCREEN_CREATE_REQUEST,
@@ -150,7 +147,6 @@ export const createScreen = () => async (dispatch, getState) => {
 };
 
 // screen Edit
-
 export const updateScreen = (screen) => async (dispatch, getState) => {
   dispatch({
     type: SCREEN_UPDATE_REQUEST,
@@ -186,7 +182,6 @@ export const updateScreen = (screen) => async (dispatch, getState) => {
 };
 
 // screen delete
-
 export const deleteScreen = (screenId) => async (dispatch, getState) => {
   dispatch({
     type: SCREEN_DELETE_REQUEST,
@@ -219,7 +214,6 @@ export const deleteScreen = (screenId) => async (dispatch, getState) => {
 };
 
 // screen video list
-
 export const screenVideosList = (screenId) => async (dispatch) => {
   dispatch({ type: SCREEN_VIDEOS_REQUEST, payload: screenId });
   try {
@@ -241,7 +235,6 @@ export const screenVideosList = (screenId) => async (dispatch) => {
 };
 
 // screen pin details
-
 export const getScreenPinDetails = (screenId) => async (dispatch) => {
   dispatch({
     type: SCREEN_PIN_DETAILS_REQUEST,
@@ -267,7 +260,6 @@ export const getScreenPinDetails = (screenId) => async (dispatch) => {
 };
 
 // screen params
-
 export const getScreenParams =
   ({ screenId }) =>
   async (dispatch) => {
@@ -296,7 +288,6 @@ export const getScreenParams =
   };
 
 // delete video screen
-
 export const deleteScreenVideo = (videoId) => async (dispatch, getState) => {
   dispatch({
     type: SCREEN_VIDEO_DELETE_REQUEST,
@@ -330,7 +321,6 @@ export const deleteScreenVideo = (videoId) => async (dispatch, getState) => {
 };
 
 // screen review create
-
 export const createReview =
   (screenId, review) => async (dispatch, getState) => {
     dispatch({
@@ -364,7 +354,6 @@ export const createReview =
   };
 
 // screen like
-
 export const likeScreen =
   (screenId, interactionData) => async (dispatch, getState) => {
     dispatch({
@@ -417,7 +406,6 @@ export const likeScreen =
   };
 
 // screen unlike
-
 export const unlikeScreen = (screenId) => async (dispatch, getState) => {
   dispatch({
     type: SCREEN_UNLIKE_REQUEST,
@@ -451,7 +439,6 @@ export const unlikeScreen = (screenId) => async (dispatch, getState) => {
 };
 
 // screen subscribe
-
 export const subscribeScreen =
   (screenId, dateHere) => async (dispatch, getState) => {
     dispatch({
@@ -487,7 +474,6 @@ export const subscribeScreen =
   };
 
 // screen unsubscribe
-
 export const unsubscribeScreen = (screenId) => async (dispatch, getState) => {
   dispatch({
     type: SCREEN_UNSUBSCRIBE_REQUEST,
@@ -522,7 +508,6 @@ export const unsubscribeScreen = (screenId) => async (dispatch, getState) => {
 };
 
 // screen flag
-
 export const flagScreen =
   (screenId, interaction) => async (dispatch, getState) => {
     dispatch({
@@ -558,7 +543,6 @@ export const flagScreen =
   };
 
 // create plea screen
-
 export const applyScreenAllyPlea = (screenId) => async (dispatch, getState) => {
   dispatch({
     type: SCREEN_ALLY_PLEA_REQUEST,
@@ -629,7 +613,6 @@ export const rejectScreenAllyPlea = (pleaId) => async (dispatch, getState) => {
 };
 
 // grant ally ple
-
 export const grantScreenAllyPlea = (pleaId) => async (dispatch, getState) => {
   dispatch({
     type: SCREEN_ALLY_GRANT_REQUEST,
@@ -661,3 +644,33 @@ export const grantScreenAllyPlea = (pleaId) => async (dispatch, getState) => {
     });
   }
 };
+
+// test
+export const checkPlaylist =
+  ({ screenName, timeNow, currentVid }) =>
+  async (dispatch) => {
+    dispatch({
+      type: "CHECK_PLAYLIST_REQUEST",
+      payload: currentVid,
+    });
+
+    console.log(currentVid);
+    try {
+      const { data } = await Axios.get(
+        `${process.env.REACT_APP_BLINDS_SERVER}/api/screens/${screenName}/screenName/${timeNow}/${currentVid}`,
+        { currentVid }
+      );
+      dispatch({
+        type: SCREEN_ALLY_GRANT_FAIL,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: "CHECK_PLAYLIST_FAIL",
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

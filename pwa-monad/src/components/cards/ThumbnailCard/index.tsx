@@ -1,10 +1,9 @@
-import { Link as RouterLink } from "react-router-dom";
 import { memo } from "react";
 import { motion } from "framer-motion";
 // api
 import { useMedia } from "hooks";
 // ui
-import { Flex, Link, Box, Stack, Skeleton } from "@chakra-ui/react";
+import { Flex, Box, Stack, Skeleton } from "@chakra-ui/react";
 // assets
 import { ThumbnailContainer } from "../NftFeaturedCard";
 
@@ -36,18 +35,6 @@ export const ThumbnailCard = memo<any>(
           pos="relative"
           zIndex="1"
         >
-          {/* Link wrapper */}
-          <Link
-            as={RouterLink}
-            to={`/nft/${nft?.id}`}
-            pos="absolute"
-            w="100%"
-            h="100%"
-            top="0"
-            left="0"
-            zIndex="2"
-            rounded="md"
-          />
           {/* Thumbnail */}
           <Box justify="center" align="center">
             <ThumbnailContainer nft={nft} />

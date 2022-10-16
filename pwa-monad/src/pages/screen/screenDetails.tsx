@@ -71,6 +71,9 @@ export function ScreenDetails(props: any) {
   const [rating, setRating] = React.useState(0);
   const [comment, setComment] = React.useState("");
 
+  const [timeNow, setTimeNow] = React.useState(new Date());
+  const [openPlayData, setOpenPlayData] = React.useState(false);
+
   const [deleteModal, setDeleteModal] = React.useState(false);
 
   const userSignin = useSelector((state: any) => state.userSignin);
@@ -162,7 +165,19 @@ export function ScreenDetails(props: any) {
         type: SCREEN_REVIEW_CREATE_RESET,
       });
     }
+    if (videos && screen) {
+      // console.log(
+      //   videos.filter((video: any) => {
+      //     return (
+      //       video.video.split("/").slice(4)[0] ===
+      //       screen.lastPlayed.split(".").slice(0, 1)[0]
+      //     );
+      //   })
+      // );
+      console.log(screen.playingDetails);
+    }
 
+    setTimeNow(new Date());
     dispatch(detailsScreen(screenId));
     dispatch(screenVideosList(screenId));
     dispatch(getScreenCalender(screenId));
@@ -469,66 +484,97 @@ export function ScreenDetails(props: any) {
               ) : (
                 <Stack>
                   <Box p="4" rounded="lg" shadow="card">
-                    <Text px="" fontSize="xs">
-                      ScreenId :{screen._id}
-                    </Text>
-                    <Flex
-                    // onClick={() => navigate(`/userProfile/${screen.master}`)}
-                    >
-                      {/* <Text fontSize="xs" fontWeight="600">
-                        Wallet :{" "}
-                      </Text> */}
-                      {/* <Text
-                        px="5px"
-                        color="gray.500"
-                        fontSize="xs"
-                        fontWeight="600"
-                      >
-                        {screen.master}
-                      </Text> */}
-                    </Flex>
-                    <Flex>
-                      <Text fontSize="xs" fontWeight="600">
-                        Location :{" "}
-                      </Text>
-                      <Text
-                        px="5px"
-                        color="gray.500"
-                        fontSize="xs"
-                        fontWeight="600"
-                      >
-                        {screen.screenAddress}, {screen.districtCity},{" "}
-                        {screen.stateUT}, {screen.country}{" "}
-                      </Text>
-                    </Flex>
-                    {loadingScreenCalender ? (
-                      <HLoading loading={loadingScreenCalender} />
-                    ) : errorScreenCalender ? (
-                      <MessageBox variant="danger">
-                        {errorScreenCalender}
-                      </MessageBox>
-                    ) : (
-                      <Flex
-                        as={Link}
-                        href={`https://viewblock.io/arweave/tx/${calender?.activeGameContract}`}
-                        isExternal
-                        rel="noopener noreferrer"
-                        align="center"
-                      >
-                        <AiTwotoneInfoCircle color="green" fontSize="10px" />
-                        <Text
-                          px="2"
-                          fontSize="sm"
-                          color="green.500"
-                          fontWeight="600"
-                        >
-                          {screenGameData?.state?.gameType}
+                    <Flex justify="center" justifyContent="space-between">
+                      <Stack>
+                        <Text align="left" px="" fontSize="xs">
+                          ScreenId :{screen._id}
                         </Text>
-                      </Flex>
-                    )}
+                        <Text
+                          color="gray.500"
+                          fontSize="xs"
+                          fontWeight="600"
+                          align="left"
+                        >
+                          Location : {screen.screenAddress},{" "}
+                          {screen.districtCity}, {screen.stateUT},{" "}
+                          {screen.stateUT}, {screen.country}{" "}
+                        </Text>
+                      </Stack>
+                      <Stack onClick={() => setOpenPlayData(!openPlayData)}>
+                        <Text fontSize="sm">{timeNow.toLocaleString()}</Text>
+                        {Math.floor(
+                          timeNow.getTime() -
+                            new Date(screen.lastActive).getTime()
+                        ) /
+                          1000 >
+                        100 ? ( // 100 seconds
+                          <Flex justifyContent="end">
+                            <Box py="1" px="2">
+                              <AiTwotoneInfoCircle color="red" fontSize="10" />
+                            </Box>
+                            <Text fontSize="xs">
+                              {new Date(screen.lastActive).toLocaleString()}
+                            </Text>
+                          </Flex>
+                        ) : (
+                          <Flex justifyContent="end">
+                            <Box py="1" px="2">
+                              <AiTwotoneInfoCircle
+                                color="green"
+                                fontSize="10"
+                              />
+                            </Box>
+                            <Text fontSize="xs">
+                              {new Date(screen.lastActive).toLocaleString()}
+                            </Text>
+                          </Flex>
+                        )}
+                      </Stack>
+                    </Flex>
                   </Box>
                   <hr />
-
+                  {openPlayData && (
+                    <Box p="2" shadow="card" rounded="lg">
+                      <Text fontWeight="600">Screen Playlist Detail</Text>
+                      <hr />
+                      <SimpleGrid gap="4" columns={[1, 2]}>
+                        <Stack p="2">
+                          <Text align="left" fontSize="sm">
+                            Last Played
+                          </Text>
+                          <Text align="left" fontWeight="600">
+                            {
+                              videos.filter((video: any) => {
+                                return (
+                                  video.video.split("/").slice(4)[0] ===
+                                  screen.lastPlayed.split(".").slice(0, 1)[0]
+                                );
+                              })[0].title
+                            }
+                          </Text>
+                        </Stack>
+                        <Stack p="2">
+                          <Text align="left" fontSize="sm">
+                            Played at
+                          </Text>
+                          <Text align="left" fontSize="sm" fontWeight="600">
+                            {new Date(screen.lastActive).toLocaleString()}
+                          </Text>
+                        </Stack>
+                      </SimpleGrid>
+                      <hr />
+                      <Text>
+                        {Math.floor(
+                          timeNow.getTime() -
+                            new Date(screen.lastActive).getTime()
+                        ) / 1000}{" "}
+                        seconds
+                      </Text>
+                      <Text>{timeNow.getTime()}</Text>
+                      <Text>{new Date(6000).toTimeString()}</Text>
+                      <Text>{new Date(screen.lastActive).getTime()}</Text>
+                    </Box>
+                  )}
                   <Stack p="4" align="center" rounded="lg" shadow="card">
                     <Text fontSize="sm" fontWeight="600">
                       Available Slots for the day

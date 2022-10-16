@@ -213,15 +213,10 @@ export function AdvertEdit(props: any) {
   const dispatch = useDispatch<any>();
   React.useEffect(() => {
     // console.log(window.location.href.split("/").slice()[5]);
-    if (!video || video._id !== videoId || successVideoUpdate) {
+    if (!video || video?._id !== videoId || successVideoUpdate) {
       dispatch({
         type: ADVERT_UPDATE_RESET,
       });
-      navigate(
-        `/advert/${video._id}/${video?.video?.split("/").slice(-1)[0]}/${
-          video.screen
-        }`
-      );
     } else {
       setTitle(video.title);
       setThumbnail(thumbnail || video.thumbnail);
@@ -361,6 +356,11 @@ export function AdvertEdit(props: any) {
         brandName,
         defaultWallet: userInfo.defaultWallet,
       })
+    );
+    navigate(
+      `/advert/${video?._id}/${video?.video?.split("/").slice(-1)[0]}/${
+        video?.screen
+      }`
     );
   };
 

@@ -6,7 +6,7 @@ import { getMediaType, triggerPort } from "services/utils";
 export const MediaContainer = ({ media }: any) => {
   // console.log(media);
   const contentType = getMediaType(media?.headers["content-type"]);
-  const ipfsUrl = media.request["responseURL"];
+  const ipfsUrl = media?.request["responseURL"];
   // const ipfsUrl = nft;
 
   // console.log(ipfsUrl);

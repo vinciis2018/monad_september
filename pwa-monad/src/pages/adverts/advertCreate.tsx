@@ -19,10 +19,11 @@ import {
   AiOutlineArrowLeft,
   AiOutlineUpload,
   AiOutlineEdit,
+  AiOutlineCheck,
 } from "react-icons/ai";
 
+import { UPLOAD_ADVERT_RESET } from "../../Constants/advertConstants";
 import { uploadVideo } from "../../Actions/advertActions";
-
 import { useWallet } from "components/contexts";
 
 // import { useNft } from "hooks";
@@ -31,6 +32,7 @@ import { useWallet } from "components/contexts";
 import MessageBox from "components/atoms/MessageBox";
 import HLoading from "components/atoms/HLoading";
 import { getMyMedia } from "Actions/mediaActions";
+import { ThumbnailCard } from "components/cards";
 
 export function AdvertCreate(props: any) {
   const screenId = window.location.href.split("/").slice()[4];
@@ -77,17 +79,17 @@ export function AdvertCreate(props: any) {
   const myMedia = useSelector((state: any) => state.myMedia);
   const { loading: loadingMyMedia, error: errorMyMedia, medias } = myMedia;
 
-  const redirect = props?.location?.search
-    ? props?.location?.search.split("=")[1]
-    : "/signin";
-
   const dispatch = useDispatch<any>();
   React.useEffect(() => {
+    console.log(screenId);
     if (isLoading) {
       window.alert("Please login with your wallet to continue");
     }
 
     if (successVideoSave) {
+      dispatch({
+        type: UPLOAD_ADVERT_RESET,
+      });
       window.alert(
         "Hey, you just uploaded you campaign media, please proceed to fill the campaig details..."
       );
@@ -99,7 +101,7 @@ export function AdvertCreate(props: any) {
     }
 
     if (!userInfo) {
-      navigate(redirect);
+      navigate("/signin");
     }
     dispatch(getMyMedia());
   }, [
@@ -108,10 +110,8 @@ export function AdvertCreate(props: any) {
     isLoading,
     userInfo,
     navigate,
-    uploadedVideo?.video,
-    screenId,
-    redirect,
     uploadedVideo,
+    screenId,
   ]);
 
   const uploadAdvertMedia = () => {
@@ -186,7 +186,14 @@ export function AdvertCreate(props: any) {
                     <Text fontWeight="600">
                       {selectAdvertPopup ? "Confirm Advert" : "Change Advert"}
                     </Text>
-                    <AiOutlineEdit onClick={uploadAdvertMedia} color="gray" />
+                    {selectAdvertPopup ? (
+                      <AiOutlineCheck
+                        onClick={uploadAdvertMedia}
+                        color="green"
+                      />
+                    ) : (
+                      <AiOutlineEdit onClick={uploadAdvertMedia} color="gray" />
+                    )}
                   </Flex>
                   {/* <Button p="2" width="100%" >{selectAdvertPopup ? "Confirm Advert" : "Change Advert"}</Button> */}
                 </Stack>
@@ -229,7 +236,7 @@ export function AdvertCreate(props: any) {
                   ) : errorMyMedia ? (
                     <MessageBox variant="danger">{errorMyMedia}</MessageBox>
                   ) : (
-                    <>
+                    <Stack>
                       <Select
                         id="advert"
                         placeholder={advert}
@@ -239,7 +246,7 @@ export function AdvertCreate(props: any) {
                         {medias?.map((nft: Record<string, any>) => (
                           <option
                             style={{ color: "black" }}
-                            key={nft?.id}
+                            key={nft?.cid}
                             value={`https://ipfs.io/ipfs/${nft?.cid}`}
                           >
                             https://ipfs.io/ipfs/{nft?.cid}
@@ -254,7 +261,26 @@ export function AdvertCreate(props: any) {
                           </option>
                         ))} */}
                       </Select>
-                    </>
+                      <SimpleGrid gap="4" columns={[1, 2, 3]}>
+                        {medias?.map((media: any, index: any) => (
+                          <Box
+                            align="center"
+                            p=""
+                            key={index}
+                            rounded="md"
+                            shadow="card"
+                            onClick={() =>
+                              setAdvert(`https://ipfs.io/ipfs/${media?.cid}`)
+                            }
+                          >
+                            <ThumbnailCard nft={media} />
+                            <Text p="1" fontSize="10" fontWeight="600">
+                              {media.cid}
+                            </Text>
+                          </Box>
+                        ))}
+                      </SimpleGrid>
+                    </Stack>
                   )}
                 </FormControl>
               )}
@@ -279,10 +305,17 @@ export function AdvertCreate(props: any) {
                         ? "Confirm Thumbnail"
                         : "Change Thumbnail"}
                     </Text>
-                    <AiOutlineEdit
-                      onClick={uploadThumbnailMedia}
-                      color="gray"
-                    />
+                    {selectThumbnailPopup ? (
+                      <AiOutlineCheck
+                        onClick={uploadThumbnailMedia}
+                        color="green"
+                      />
+                    ) : (
+                      <AiOutlineEdit
+                        onClick={uploadThumbnailMedia}
+                        color="gray"
+                      />
+                    )}
                   </Flex>
                   {/* <Button p="2" width="100%" onClick={() => setSelectThumbnailPopup(!selectThumbnailPopup)}>{selectThumbnailPopup ? "Confirm Thumbnail" : "Change Thumbnail"}</Button> */}
                 </Stack>
@@ -330,7 +363,7 @@ export function AdvertCreate(props: any) {
                   ) : errorMyMedia ? (
                     <MessageBox variant="danger">{errorMyMedia}</MessageBox>
                   ) : (
-                    <>
+                    <Stack>
                       <Select
                         id="thumbnail"
                         placeholder={thumbnail}
@@ -340,7 +373,7 @@ export function AdvertCreate(props: any) {
                         {medias?.map((nft: Record<string, any>) => (
                           <option
                             style={{ color: "black" }}
-                            key={nft?.id}
+                            key={nft?.cid}
                             value={`https://ipfs.io/ipfs/${nft?.cid}`}
                           >
                             https://ipfs.io/ipfs/{nft?.cid}
@@ -355,7 +388,26 @@ export function AdvertCreate(props: any) {
                           </option>
                         ))} */}
                       </Select>
-                    </>
+                      <SimpleGrid gap="4" columns={[1, 2, 3]}>
+                        {medias?.map((media: any, index: any) => (
+                          <Box
+                            align="center"
+                            p=""
+                            key={index}
+                            rounded="md"
+                            shadow="card"
+                            onClick={() =>
+                              setThumbnail(`https://ipfs.io/ipfs/${media?.cid}`)
+                            }
+                          >
+                            <ThumbnailCard nft={media} />
+                            <Text p="1" fontSize="10" fontWeight="600">
+                              {media.cid}
+                            </Text>
+                          </Box>
+                        ))}
+                      </SimpleGrid>
+                    </Stack>
                   )}
                 </FormControl>
               )}

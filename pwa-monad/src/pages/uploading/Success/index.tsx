@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 
 import {
   Box,
+  SimpleGrid,
   Tooltip,
   Image,
   Center,
@@ -122,17 +123,29 @@ export function Success() {
                     : `<iframe width="100%" src=${media.fileUrl} title="Monad Upload" frameborder="0" allowfullscreen></iframe>`}
                 </Text>
               </Box>
-              <Button
-                m="2"
-                variant="outline"
-                color="violet.500"
-                width="100%"
-                // eslint-disable-next-line no-constant-condition
-                rightIcon={"copied" ? <AiOutlineCheck /> : <AiOutlineCopy />}
-                onClick={onCopy}
-              >
-                {hasCopied ? "Copied!" : "Copy Link"}
-              </Button>
+              <SimpleGrid gap="4" columns={[1, 2]}>
+                <Button
+                  m="2"
+                  variant="outline"
+                  color="violet.500"
+                  width="100%"
+                  // eslint-disable-next-line no-constant-condition
+                  rightIcon={"copied" ? <AiOutlineCheck /> : <AiOutlineCopy />}
+                  onClick={onCopy}
+                >
+                  {hasCopied ? "Copied!" : "Copy Link"}
+                </Button>
+                <Button
+                  m="2"
+                  bgGradient="linear-gradient(to left, #BC78EC, #7833B6)"
+                  width="100%"
+                  // eslint-disable-next-line no-constant-condition
+                  rightIcon={"copied" ? <AiOutlineCheck /> : <AiOutlineCopy />}
+                  onClick={() => window.open(`/nft/${mediaId}`)}
+                >
+                  See Media
+                </Button>
+              </SimpleGrid>
             </Box>
           )}
         </Stack>

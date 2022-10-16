@@ -234,9 +234,7 @@ export const Nav = () => {
                       </MenuItem>
                       <MenuItem
                         as={RouterLink}
-                        to={`/wallet/${
-                          userInfo._id
-                        }/${getArweavePublicAddress()}`}
+                        to={`/wallet/${userInfo._id}/${userInfo.defaultWallet}`}
                         color="black"
                         icon={<AiOutlineWallet size="20px" />}
                       >
@@ -426,9 +424,7 @@ export const Nav = () => {
                         <Flex
                           p="2"
                           as={RouterLink}
-                          to={`/userProfile/${
-                            userInfo._id
-                          }/${getArweavePublicAddress()}`}
+                          to={`/userProfile/${userInfo._id}/${userInfo.defaultWallet}`}
                           align="center"
                           shadow="card"
                           rounded="lg"

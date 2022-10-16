@@ -16,7 +16,7 @@ import {
   Text,
   Button,
 } from "@chakra-ui/react";
-import MediaContainer from "components/widgets/MediaContainer";
+import MediaContainer from "components/widgets/ThumbnailContainer";
 import { useDispatch } from "react-redux";
 import { uploadMedia } from "Actions/mediaActions";
 import { useSelector } from "react-redux";

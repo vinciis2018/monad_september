@@ -9,6 +9,10 @@ import {
   Stack,
   Text,
   Button,
+  Checkbox,
+  FormControl,
+  FormLabel,
+  Input,
 } from "@chakra-ui/react";
 import { Camera } from "react-camera-pro";
 
@@ -34,7 +38,25 @@ import HLoading from "components/atoms/HLoading";
 export function Active() {
   const navigate = useNavigate();
 
-  const { fileUrl, setFileUrl, setThumb, fileType, setFileType } = useUpload();
+  const {
+    fileUrl,
+    setFileUrl,
+    thumb,
+    setThumb,
+    fileType,
+    setFileType,
+    tags,
+    setTags,
+    setDescription,
+    setTitle,
+    setNsfw,
+  } = useUpload();
+  const [myTitle, setMyTitle] = useState<any>("");
+  const [myDescription, setMyDesription] = useState<any>("");
+  const [myNsfw, setMyNsfw] = useState<any>("");
+  const [tagString, setTagString] = useState<any>("");
+
+  const [err, setErr] = useState<any>("");
   const camera = useRef<CameraType>(null);
   const [facingMode, setFacingMode] = useState<FacingMode>("environment");
 
@@ -90,8 +112,29 @@ export function Active() {
     } else {
       setUsingCam(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fileUrl, userInfo, usingCam, navigate]);
+    if (tagString) {
+      setTags(
+        tagString.split(",").map((_string: any) => _string.split(" ").join(""))
+      );
+    }
+    if (fileUrl) {
+      setFileUrl(fileUrl);
+    }
+    if (thumb) {
+      setThumb(thumb);
+    }
+  }, [
+    fileUrl,
+    userInfo,
+    usingCam,
+    navigate,
+    getArweavePublicAddress,
+    setFileUrl,
+    tagString,
+    setTags,
+    thumb,
+    setThumb,
+  ]);
 
   const takePhoto = async () => {
     if (camera.current) {
@@ -118,7 +161,20 @@ export function Active() {
 
   const startUpload = ({ data }: any) => {
     // console.log(data);
-    navigate("/upload-tags");
+    // navigate("/upload-tags");
+    let error = "";
+    if (!fileUrl) error = "No media found";
+    if (myTitle === "") error = "Please input a title";
+    if (myDescription === "") error = "Please input a description";
+    if (error !== "") {
+      setErr(error);
+    } else {
+      setErr("");
+      setTitle(myTitle);
+      setDescription(myDescription);
+      setNsfw(myNsfw);
+      navigate("/upload-confirm");
+    }
   };
 
   return (
@@ -175,6 +231,92 @@ export function Active() {
                   file={fileUrl}
                   fileType={fileType}
                 />
+              </Box>
+              <Box color="black.500">
+                <FormControl id="title">
+                  <FormLabel fontSize="xs">Find the perfect name</FormLabel>
+                  <Stack direction="row" align="center">
+                    <Input
+                      id="title"
+                      onChange={(e) => {
+                        setMyTitle(e.target.value);
+                      }}
+                      placeholder={myTitle}
+                      value={myTitle}
+                      type="text"
+                    />
+                  </Stack>
+                </FormControl>
+                <FormControl id="description">
+                  <FormLabel fontSize="xs">Tell everyone about it</FormLabel>
+                  <Stack direction="row" align="center">
+                    <Input
+                      id="description"
+                      onChange={(e) => {
+                        setMyDesription(e.target.value);
+                      }}
+                      placeholder={myDescription}
+                      value={myDescription}
+                      type="text"
+                    />
+                  </Stack>
+                </FormControl>
+                <FormControl id="tags">
+                  <FormLabel fontSize="xs">
+                    Input tags here with a “,” and hit space bar
+                  </FormLabel>
+                  <Stack direction="row" align="center">
+                    <Input
+                      id="tags"
+                      onChange={(e) => {
+                        setTagString(e.target.value);
+                      }}
+                      placeholder={tagString}
+                      // value={tags}
+                      type="text"
+                    />
+                  </Stack>
+                </FormControl>
+                {tags && tags.length > 0 && (
+                  <Flex p="1" justify="space-between">
+                    {tags.map(
+                      (_tag, _i) =>
+                        _tag && (
+                          <Box
+                            key={_i}
+                            rounded="md"
+                            px="2"
+                            py="1"
+                            bgColor="violet.200"
+                          >
+                            <Text color="black.500">{_tag}</Text>
+                          </Box>
+                        )
+                    )}
+                  </Flex>
+                )}
+                <FormControl id="nsfw">
+                  <FormLabel>
+                    {" "}
+                    This content is{" "}
+                    <strong style={{ color: "#FCC78F" }}>
+                      Explicit or 18+.
+                    </strong>
+                  </FormLabel>
+                  <Stack direction="row" align="center">
+                    <Checkbox
+                      id="nsfw"
+                      onChange={(e) => setMyNsfw(e.target.value)}
+                      flexShrink="0"
+                    >
+                      NSFW
+                    </Checkbox>
+                  </Stack>
+                </FormControl>
+                {err && <MessageBox variant="danger">{err}</MessageBox>}
+                {/* <Button variant="outline" color="violet.500" onClick={onSubmit}>
+                  Submit
+                </Button> */}
               </Box>
               <Button
                 width="100%"
@@ -260,6 +402,16 @@ const ThumbnailContainer = ({
       </Text>
       <Box rounded="xl" overflow="hidden" shadow="card">
         {fileType === "image/png" && (
+          <Image
+            src={fileThumbnail}
+            alt="click to upload"
+            boxSize="100%"
+            objectFit="cover"
+            width={"auto"}
+            height={111}
+          />
+        )}
+        {fileType === "image/jpeg" && (
           <Image
             src={fileThumbnail}
             alt="click to upload"

@@ -3,11 +3,12 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Center, Box, Button, Stack } from "@chakra-ui/react";
-import { triggerPort } from "services/utils";
+// import { triggerPort } from "services/utils";
 import {
   screenVideosList,
   // screenPlaylistDetail,
   detailsScreen,
+  checkPlaylist,
 } from "../../Actions/screenActions";
 import HLoading from "components/atoms/HLoading";
 import MessageBox from "components/atoms/MessageBox";
@@ -16,7 +17,8 @@ export function ScreenPlayer(props: any) {
   const screenId = window.location.href.split("/").slice()[5];
   const navigate = useNavigate();
 
-  const [screenName, setScreenName] = useState("");
+  const [screenName, setScreenName] = useState<any>("");
+  const [timeNow, setTimeNow] = useState<any>(new Date());
 
   const userSignin = useSelector((state: any) => state.userSignin);
   const { loading: loadingUser, error: errorUser, userInfo } = userSignin;
@@ -51,17 +53,20 @@ export function ScreenPlayer(props: any) {
       e.target.src = videos.map((video: any) => video.video)[index - 1];
 
       e.target.play();
+      setTimeNow(new Date());
+      const currentVid = e.target.src.split("/").slice(4);
       // dispatch(screenPlaylistDetail({video: e.target.src, screenId }))
-      triggerPort(e.target.src.split("/").slice(-1));
+      // triggerPort(e.target.src.split("/").slice(-1));
+      dispatch(checkPlaylist({ screenName, timeNow, currentVid }));
     }
   };
 
   const updateScreen = async () => {
     // console.log(screenName);
-    fetch(
+    await fetch(
       `${process.env.REACT_APP_BLINDS_SERVER}/api/screens/${screenName}/screenName`
     ).then((res) => {
-      // console.log(res.json());
+      // console.log(res);
     });
   };
   return (

@@ -518,6 +518,12 @@ export function UserProfile(props: any) {
             >
               Upload Content
             </Button>
+            <Text fontSize="xs">
+              It may take a while for your newly uploaded media to seed
+            </Text>
+            <Text fontSize="xs">
+              Please be patient, it takes time only for the first time
+            </Text>
             <SimpleGrid
               p="2"
               w="100%"
