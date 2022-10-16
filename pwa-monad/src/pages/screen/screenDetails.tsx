@@ -58,6 +58,7 @@ import { MediaContainer } from "components/common";
 import HLoading from "components/atoms/HLoading";
 import MessageBox from "components/atoms/MessageBox";
 import { Rating } from "components/common";
+import { listAllVideos } from "Actions/advertActions";
 
 export function ScreenDetails(props: any) {
   const screenId = window.location.href.split("/").slice()[4];
@@ -147,6 +148,9 @@ export function ScreenDetails(props: any) {
     success: successReviewCreate,
   } = screenReviewCreate;
 
+  const videoListAll = useSelector((state: any) => state.videoListAll);
+  const { allVideos } = videoListAll;
+
   const redirect = props?.location?.search
     ? props?.location?.search.split("=")[1]
     : "/signin";
@@ -184,6 +188,7 @@ export function ScreenDetails(props: any) {
     dispatch(listAllPleas());
     dispatch(getScreenParams({ screenId }));
     dispatch(getScreenGameDetails({ activeGame }));
+    dispatch(listAllVideos());
   }, [
     activeGame,
     dispatch,
@@ -544,12 +549,12 @@ export function ScreenDetails(props: any) {
                           </Text>
                           <Text align="left" fontWeight="600">
                             {
-                              videos.filter((video: any) => {
+                              allVideos.filter((video: any) => {
                                 return (
                                   video.video.split("/").slice(4)[0] ===
                                   screen.lastPlayed.split(".").slice(0, 1)[0]
                                 );
-                              })[0].title
+                              })[0]?.title
                             }
                           </Text>
                         </Stack>
