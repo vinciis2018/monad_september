@@ -1,7 +1,7 @@
 <!-- language-all: javascript -->
 
 <h1 align="center">
-  <img src="https://raw.githubusercontent.com/koii-network/koii.X/main/.github/images/koii_logo.svg" width="224px"/><br/>
+  <!-- <img src="https://raw.githubusercontent.com/koii-network/koii.X/main/.github/images/koii_logo.svg" width="224px"/><br/> -->
   Monad (PWA) :calling:
 </h1>
 <p align="center">
