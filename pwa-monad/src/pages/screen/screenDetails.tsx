@@ -169,18 +169,6 @@ export function ScreenDetails(props: any) {
         type: SCREEN_REVIEW_CREATE_RESET,
       });
     }
-    if (videos && screen) {
-      // console.log(
-      //   videos.filter((video: any) => {
-      //     return (
-      //       video.video.split("/").slice(4)[0] ===
-      //       screen.lastPlayed.split(".").slice(0, 1)[0]
-      //     );
-      //   })
-      // );
-      console.log(screen.playingDetails);
-    }
-
     setTimeNow(new Date());
     dispatch(detailsScreen(screenId));
     dispatch(screenVideosList(screenId));
@@ -198,6 +186,7 @@ export function ScreenDetails(props: any) {
     successReviewCreate,
     successVideoDelete,
     userInfo,
+    // timeNow,
   ]);
 
   const allyPleaHandler = () => {

@@ -20,7 +20,7 @@ import { useUpload, useWallet } from "components/contexts";
 import { useDropzone } from "react-dropzone";
 
 import {
-  AiOutlineHome,
+  AiOutlineFileImage,
   AiOutlineUpload,
   AiOutlineSetting,
 } from "react-icons/ai";
@@ -182,10 +182,10 @@ export function Active() {
       <Center maxW="container.lg" minH="600" mx="auto" pt="10" pb="8">
         <Stack p="8" rounded="lg" shadow="card">
           <Flex p="4" justify="space-between" align="center">
-            <AiOutlineHome
+            <AiOutlineFileImage
               size="20px"
               color="black"
-              onClick={() => navigate(`/`)}
+              onClick={() => navigate(`/customImages`)}
             />
             <Text fontSize="xl" fontWeight="600" color="black.500">
               Welcome to Monad

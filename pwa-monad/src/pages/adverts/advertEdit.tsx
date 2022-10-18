@@ -213,10 +213,11 @@ export function AdvertEdit(props: any) {
   const dispatch = useDispatch<any>();
   React.useEffect(() => {
     // console.log(window.location.href.split("/").slice()[5]);
-    if (!video || video?._id !== videoId || successVideoUpdate) {
+    if (!video || video._id !== videoId || successVideoUpdate) {
       dispatch({
         type: ADVERT_UPDATE_RESET,
       });
+      dispatch(getVideoDetails(videoId));
     } else {
       setTitle(video.title);
       setThumbnail(thumbnail || video.thumbnail);
@@ -255,7 +256,6 @@ export function AdvertEdit(props: any) {
 
     dispatch(getVideoDetails(videoId));
     dispatch(detailsScreen(screenId));
-    dispatch(getVideoDetails(videoId));
     dispatch(getScreenCalender(screenId));
     dispatch(getAdvertGameDetails(videoId));
     dispatch(getMyMedia());
@@ -274,6 +274,9 @@ export function AdvertEdit(props: any) {
     successAdvertGameCreate,
     successAdvertGameRemove,
     txId,
+    successDayBooking,
+    navigate,
+    redirect,
   ]);
 
   const openDayModal = () => {
@@ -531,47 +534,51 @@ export function AdvertEdit(props: any) {
                                 value={category}
                                 onChange={(e) => setCategory(e.target.value)}
                               >
-                                <option value="AUTOMOBILE">Automobile</option>
-                                <option value="COACHING_INSTITUTE">
+                                <option key={1} value="AUTOMOBILE">
+                                  Automobile
+                                </option>
+                                <option key={2} value="COACHING_INSTITUTE">
                                   Coaching/Institute
                                 </option>
-                                <option value="CONSUMER_GOOD">
+                                <option key={3} value="CONSUMER_GOOD">
                                   Consumer Good
                                 </option>
-                                <option value="CONSUMER_TECH">
+                                <option key={4} value="CONSUMER_TECH">
                                   Cosumer Tech
                                 </option>
-                                <option value="ENTERTAINMENT">
+                                <option key={5} value="ENTERTAINMENT">
                                   Entertainment
                                 </option>
-                                <option value="FOOD_BEVEREGE">
+                                <option key={6} value="FOOD_BEVEREGE">
                                   Food/Beverege
                                 </option>
-                                <option value="GOVERNMENT">
+                                <option key={7} value="GOVERNMENT">
                                   Government Body
                                 </option>
-                                <option value="HEALTH_MEDICINE">
+                                <option key={8} value="HEALTH_MEDICINE">
                                   Health/Medicine
                                 </option>
-                                <option value="HOSPITAL_LABS">
+                                <option key={9} value="HOSPITAL_LABS">
                                   Hospital/Pharma Lab
                                 </option>
-                                <option value="HOTEL_ACCOMODATION">
+                                <option key={10} value="HOTEL_ACCOMODATION">
                                   Hotel/Accomodation
                                 </option>
-                                <option value="NEWS_POLITICS">
+                                <option key={11} value="NEWS_POLITICS">
                                   News/Politics
                                 </option>
-                                <option value="SCHOOL_COLLEGE">
+                                <option key={12} value="SCHOOL_COLLEGE">
                                   School/College
                                 </option>
-                                <option value="STARTUP_MSME">
+                                <option key={13} value="STARTUP_MSME">
                                   Startup/MSME
                                 </option>
-                                <option value="TRAVEL_TOURISM">
+                                <option key={14} value="TRAVEL_TOURISM">
                                   Travel/Toursim
                                 </option>
-                                <option value="OTHER">Others</option>
+                                <option key={15} value="OTHER">
+                                  Others
+                                </option>
                               </Select>
                             </Stack>
                             <FormLabel px="1" fontSize="xs">
