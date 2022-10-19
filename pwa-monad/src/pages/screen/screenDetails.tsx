@@ -592,7 +592,7 @@ export function ScreenDetails(props: any) {
                       <Modal size="xl" isOpen={isOpen} onClose={onClose}>
                         <ModalOverlay />
                         <ModalContent>
-                          <ModalHeader>Last 10 Campaigns</ModalHeader>
+                          <ModalHeader>Last 5 Played Campaigns</ModalHeader>
                           <ModalCloseButton />
                           <ModalBody py="10">
                             {screen.playingDetails
@@ -606,7 +606,7 @@ export function ScreenDetails(props: any) {
                                   new Date(x.createdAt).getDate() ===
                                   timeNow.getDate()
                               )
-                              .filter((y: any, i: number) => i >= 0 && i < 10)
+                              .filter((y: any, i: number) => i >= 0 && i < 5)
                               .map((detail: any) => (
                                 <Stack key={detail._id}>
                                   <SimpleGrid columns={[1, 2]}>
