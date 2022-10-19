@@ -14,3 +14,26 @@ code {
 .App {
   text-align: center;
 }
+
+.post{
+  background-color: #eee;
+  margin: 2rem;
+  padding: 1rem;
+}
+
+.pagination {
+  margin: 1rem auto;
+  padding: 1rem;
+  list-style: none;
+  display: flex;
+  font-size: 1rem;
+  justify-content: space-evenly;
+  width: 50%;
+}
+
+.active{
+  border: 1px solid black;
+  border-radius: 10%;
+  padding: 1rem;
+  /* outline: none; */
+}

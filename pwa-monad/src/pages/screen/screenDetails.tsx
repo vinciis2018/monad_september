@@ -17,6 +17,14 @@ import {
   FormLabel,
   Input,
   SimpleGrid,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
 } from "@chakra-ui/react";
 
 import {
@@ -76,6 +84,8 @@ export function ScreenDetails(props: any) {
   const [openPlayData, setOpenPlayData] = React.useState(false);
 
   const [deleteModal, setDeleteModal] = React.useState(false);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const userSignin = useSelector((state: any) => state.userSignin);
   const { loading: loadingUser, error: errorUser, userInfo } = userSignin;
@@ -169,6 +179,7 @@ export function ScreenDetails(props: any) {
         type: SCREEN_REVIEW_CREATE_RESET,
       });
     }
+
     setTimeNow(new Date());
     dispatch(detailsScreen(screenId));
     dispatch(screenVideosList(screenId));
@@ -177,6 +188,7 @@ export function ScreenDetails(props: any) {
     dispatch(getScreenParams({ screenId }));
     dispatch(getScreenGameDetails({ activeGame }));
     dispatch(listAllVideos());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     activeGame,
     dispatch,
@@ -188,7 +200,14 @@ export function ScreenDetails(props: any) {
     userInfo,
     // timeNow,
   ]);
-
+  // console.log(
+  //   screen?.playingDetails
+  //     .map((detail: any) => detail)
+  //     .sort(
+  //       (a: any, b: any) =>
+  //         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  //     )[0]
+  // );
   const allyPleaHandler = () => {
     if (screen.pleas.includes(userInfo?._id)) {
       window.alert(
@@ -285,6 +304,12 @@ export function ScreenDetails(props: any) {
   //     window.alert("Please sign in to unsubscribe screen");
   //   }
   // }
+
+  const openPlayDataHandler = React.useCallback(() => {
+    if (screen) {
+      setOpenPlayData(!openPlayData);
+    }
+  }, [openPlayData, screen]);
 
   return (
     <Box px="2" pt="20" color="black.500">
@@ -494,7 +519,7 @@ export function ScreenDetails(props: any) {
                           {screen.stateUT}, {screen.country}{" "}
                         </Text>
                       </Stack>
-                      <Stack onClick={() => setOpenPlayData(!openPlayData)}>
+                      <Stack onClick={() => openPlayDataHandler()}>
                         <Text fontSize="sm">{timeNow.toLocaleString()}</Text>
                         {Math.floor(
                           timeNow.getTime() -
@@ -528,7 +553,7 @@ export function ScreenDetails(props: any) {
                   </Box>
                   <hr />
                   {openPlayData && (
-                    <Box p="2" shadow="card" rounded="lg">
+                    <Box onClick={onOpen} p="2" shadow="card" rounded="lg">
                       <Text fontWeight="600">Screen Playlist Detail</Text>
                       <hr />
                       <SimpleGrid gap="4" columns={[1, 2]}>
@@ -557,16 +582,72 @@ export function ScreenDetails(props: any) {
                         </Stack>
                       </SimpleGrid>
                       <hr />
-                      <Text>
+                      {/* <Text>
                         {Math.floor(
                           timeNow.getTime() -
                             new Date(screen.lastActive).getTime()
                         ) / 1000}{" "}
                         seconds
-                      </Text>
-                      <Text>{timeNow.getTime()}</Text>
-                      <Text>{new Date(6000).toTimeString()}</Text>
-                      <Text>{new Date(screen.lastActive).getTime()}</Text>
+                      </Text> */}
+                      <Modal size="xl" isOpen={isOpen} onClose={onClose}>
+                        <ModalOverlay />
+                        <ModalContent>
+                          <ModalHeader>Last 10 Campaigns</ModalHeader>
+                          <ModalCloseButton />
+                          <ModalBody py="10">
+                            {screen.playingDetails
+                              .sort(
+                                (a: any, b: any) =>
+                                  new Date(b.createdAt).getTime() -
+                                  new Date(a.createdAt).getTime()
+                              )
+                              .filter(
+                                (x: any) =>
+                                  new Date(x.createdAt).getDate() ===
+                                  timeNow.getDate()
+                              )
+                              .filter((y: any, i: number) => i >= 0 && i < 10)
+                              .map((detail: any) => (
+                                <Stack key={detail._id}>
+                                  <SimpleGrid columns={[1, 2]}>
+                                    <Box p="2" align="left">
+                                      <Text fontWeight="600" fontSize="xs">
+                                        {new Date(
+                                          detail.playTime
+                                        ).toLocaleString()}
+                                      </Text>
+                                      <Text fontSize="md">
+                                        {
+                                          allVideos.filter((video: any) => {
+                                            return (
+                                              video.video
+                                                .split("/")
+                                                .slice(4)[0] ===
+                                              detail.playVideo
+                                                .split(".")
+                                                .slice(0, 1)[0]
+                                            );
+                                          })[0]?.title
+                                        }
+                                      </Text>
+                                    </Box>
+                                    <Box align="left">
+                                      <Text p="1" fontSize="xs">
+                                        {detail.deviceInfo}
+                                      </Text>
+                                    </Box>
+                                  </SimpleGrid>
+                                  <hr />
+                                </Stack>
+                              ))}
+                            <ModalFooter>
+                              <Text fontSize="sm" color="green">
+                                For more log details, please contact moderators
+                              </Text>
+                            </ModalFooter>
+                          </ModalBody>
+                        </ModalContent>
+                      </Modal>
                     </Box>
                   )}
                   <Stack p="4" align="center" rounded="lg" shadow="card">

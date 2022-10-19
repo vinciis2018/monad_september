@@ -178,7 +178,15 @@ export function AdvertDetails(props: any) {
         <Box maxW="container.lg" mx="auto" pb="8">
           <Box>
             <Stack p="2" direction="row" justify="space-between">
-              <AiOutlineArrowLeft onClick={() => navigate(-1)} />
+              <AiOutlineArrowLeft
+                onClick={() =>
+                  navigate(
+                    `/screen/${screen._id}/${
+                      screen.image.split("/").slice(-1)[0]
+                    }/${screen.activeGameContract}`
+                  )
+                }
+              />
               <Text fontWeight="600">Campaign Details</Text>
               {video.uploader === userInfo._id ? (
                 <IconButton
