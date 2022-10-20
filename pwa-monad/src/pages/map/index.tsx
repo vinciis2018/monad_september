@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { Map } from "./Map";
-import { Box, Stack, Input } from "@chakra-ui/react";
+import { Box, Stack, Input, Text } from "@chakra-ui/react";
 import { getPinJson } from "../../Actions/pinActions";
 
 import { AiOutlineEnvironment, AiOutlineArrowLeft } from "react-icons/ai";
@@ -71,8 +71,34 @@ export function MapBox(props: any) {
             ) : errorScreen ? (
               <MessageBox variant="danger">{errorScreen}</MessageBox>
             ) : (
-              <Box p="2" m="10" shadow="card" rounded="lg">
+              <Box p="2" shadow="card" rounded="lg">
                 <Screen key={screen._id} screen={screen} />
+                <Text fontSize="xs" fontWeight="600">
+                  Currently Playing
+                </Text>
+                <Box
+                  onClick={() =>
+                    navigate(
+                      `/screen/${screen._id}/${
+                        screen.image.split("/").slice(-1)[0]
+                      }/
+                    ${screen.activeGameContract}
+                  }`
+                    )
+                  }
+                  as="video"
+                  autoPlay
+                  loop
+                  controls
+                  muted
+                  boxSize="100%"
+                >
+                  <source
+                    src={`https://ipfs.io/ipfs/${screen.lastPlayed
+                      .split(".")
+                      .slice(0, 1)}`}
+                  />
+                </Box>
               </Box>
             )}
           </>

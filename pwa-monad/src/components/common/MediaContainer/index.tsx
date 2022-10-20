@@ -60,7 +60,7 @@ export const MediaContainer = ({ media }: any) => {
     }
   };
   return (
-    <Box rounded="xl" overflow="hidden">
+    <Box rounded="xl" height="360px" overflow="hidden">
       {renderContainer()}
     </Box>
   );

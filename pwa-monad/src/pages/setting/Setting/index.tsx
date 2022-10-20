@@ -8,7 +8,7 @@ import { useLogin, useWallet } from "components/contexts";
 
 import { Box, Center, Flex, Stack, Text, Button } from "@chakra-ui/react";
 import { CopyableAddress } from "components/ui";
-import { AiOutlineUpload, AiOutlineWallet, AiOutlineWarning } from "react-icons/ai"
+import { AiOutlineUpload, AiOutlineFileImage, AiOutlineWarning } from "react-icons/ai"
 import { isPWA } from "utils/util";
 import { KeyPhraseSaveModal } from "components/modals/KeyPhraseSaveModal";
 import { isSeedPhraseSaved } from "services";
@@ -120,7 +120,7 @@ export function Setting() {
               <Text fontSize="lg" fontWeight="600" >
                 Wallet & Security
               </Text>
-              <AiOutlineWallet size="20px" color="black" onClick={() => navigate(`/wallet/${userInfo._id}/${getArweavePublicAddress()}`)} />
+              <AiOutlineFileImage size="20px" color="black" onClick={() => navigate(`/customImages`)} />
             </Flex>
             <hr />
             <Flex align="center" justify="space-between">

@@ -24,6 +24,7 @@ export const AUTH_ROUTES: string[] = [
   "/key-phrase-save",
   "/key-confirm",
   "/key-recovery",
+  "/customImages",
 ];
 
 export const NO_AUTH_ROUTES: string[] = [

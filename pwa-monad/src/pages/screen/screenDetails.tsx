@@ -412,9 +412,9 @@ export function ScreenDetails(props: any) {
               {isError && <MessageBox varian="danger">{isError}</MessageBox>}
               {media && (
                 <Box rounded="lg" color="gray.200" border="1px" shadow="card">
-                  <Box onClick={() => navigate(`/myscreen/play/${screenId}`)}>
-                    <MediaContainer media={media} />
-                  </Box>
+                  {/* <Box onClick={() => navigate(`/myscreen/play/${screenId}`)}> */}
+                  <MediaContainer media={media} />
+                  {/* </Box> */}
                   <Flex
                     color="black"
                     p="4"
@@ -592,7 +592,9 @@ export function ScreenDetails(props: any) {
                       <Modal size="xl" isOpen={isOpen} onClose={onClose}>
                         <ModalOverlay />
                         <ModalContent>
-                          <ModalHeader>Last 5 Played Campaigns</ModalHeader>
+                          <ModalHeader>
+                            Last 5 Played Campaigns Today
+                          </ModalHeader>
                           <ModalCloseButton />
                           <ModalBody py="10">
                             {screen.playingDetails
@@ -616,7 +618,48 @@ export function ScreenDetails(props: any) {
                                           detail.playTime
                                         ).toLocaleString()}
                                       </Text>
-                                      <Text fontSize="md">
+                                      <Text
+                                        fontSize="md"
+                                        onClick={() =>
+                                          navigate(
+                                            `/advert/${
+                                              allVideos.filter((video: any) => {
+                                                return (
+                                                  video.video
+                                                    .split("/")
+                                                    .slice(4)[0] ===
+                                                  detail.playVideo
+                                                    .split(".")
+                                                    .slice(0, 1)[0]
+                                                );
+                                              })[0]?._id
+                                            }/${allVideos
+                                              .filter((video: any) => {
+                                                return (
+                                                  video.video
+                                                    .split("/")
+                                                    .slice(4)[0] ===
+                                                  detail.playVideo
+                                                    .split(".")
+                                                    .slice(0, 1)[0]
+                                                );
+                                              })[0]
+                                              ?.video.split("/")
+                                              .slice(4)}/${
+                                              allVideos.filter((video: any) => {
+                                                return (
+                                                  video.video
+                                                    .split("/")
+                                                    .slice(4)[0] ===
+                                                  detail.playVideo
+                                                    .split(".")
+                                                    .slice(0, 1)[0]
+                                                );
+                                              })[0]?.screen
+                                            }`
+                                          )
+                                        }
+                                      >
                                         {
                                           allVideos.filter((video: any) => {
                                             return (

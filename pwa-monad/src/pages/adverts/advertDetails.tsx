@@ -182,7 +182,7 @@ export function AdvertDetails(props: any) {
                 onClick={() =>
                   navigate(
                     `/screen/${screen._id}/${
-                      screen.image.split("/").slice(-1)[0]
+                      screen?.image?.split("/").slice(-1)[0]
                     }/${screen.activeGameContract}`
                   )
                 }

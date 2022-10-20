@@ -157,17 +157,20 @@ export const getMyMedia = () => async (dispatch, getState) => {
 };
 
 export const generateVideoFromImages =
-  (images) => async (dispatch, getState) => {
+  (images, duration, width, height) => async (dispatch, getState) => {
     dispatch({
       type: GENERATE_VIDEO_FROM_IMAGES_REQUEST,
       payload: images,
+      duration,
+      width,
+      height,
     });
 
     try {
       const { data } = await Axios.post(
         // `${process.env.REACT_APP_BLINDS_SERVER}/api/media/createVideoFromImages`,
         `https://img2vdo.herokuapp.com/i2v`,
-        images
+        { images, duration, width, height }
       );
       dispatch({
         type: GENERATE_VIDEO_FROM_IMAGES_SUCCESS,

@@ -77,6 +77,7 @@ export const PublicRoutes = () => {
         <Route path="/upload-photos" element={<PhotoView />} />
         <Route path="/upload-confirm" element={<UploadConfirm />} />
         <Route path="/upload-success/:cid" element={<Success />} />
+        <Route path="/customImages" element={<CustomImages />} />
         {/* setting */}
         <Route path="/setting/wifi-test" element={<WifiTesting />} />
         <Route path="/setting/recovery" element={<Recovery />} />
@@ -134,7 +135,6 @@ export const PublicRoutes = () => {
         <Route path="/pleaBucket" element={<PleaBucket />} />
 
         {/* <Route path="/wallet/:id/:wallet" element={<Wallet />} /> */}
-        <Route path="/customImages" element={<CustomImages />} />
 
         <Route path="/nft/:id" element={<NFT />} />
 
