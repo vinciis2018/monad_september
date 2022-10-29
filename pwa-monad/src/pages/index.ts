@@ -47,3 +47,5 @@ export { PleaBucket } from "./pleas";
 export { UserDashboard, ScreenDashboard, CampaignDashboard } from "./dashboard";
 
 export { CustomImages } from "./custom";
+
+export { CustomCreate } from "./Admin";

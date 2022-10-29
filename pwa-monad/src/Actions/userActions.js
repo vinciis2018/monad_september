@@ -3,6 +3,9 @@ import {
   SEND_MAIL_FAIL,
   SEND_MAIL_REQUEST,
   SEND_MAIL_SUCCESS,
+  USER_DELETE_FAIL,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUCCESS,
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
@@ -205,6 +208,38 @@ export const listUsers = () => async (dispatch, getState) => {
         : error.message;
     dispatch({
       type: USER_LIST_FAIL,
+      payload: message,
+    });
+  }
+};
+
+// delete Users
+export const deleteUser = (userId) => async (dispatch, getState) => {
+  dispatch({
+    type: USER_DELETE_REQUEST,
+    payload: userId,
+  });
+  const {
+    userSignin: { userInfo },
+  } = getState();
+  try {
+    const { data } = await Axios.delete(
+      `${process.env.REACT_APP_BLINDS_SERVER}/api/users/${userId}`,
+      {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      }
+    );
+    dispatch({
+      type: USER_DELETE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({
+      type: USER_DELETE_FAIL,
       payload: message,
     });
   }

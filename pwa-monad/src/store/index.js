@@ -3,6 +3,7 @@ import thunk from "redux-thunk";
 
 import {
   mailSendReducer,
+  userDeleteReducer,
   userDetailsReducer,
   userListReducer,
   userScreensReducer,
@@ -93,6 +94,7 @@ const reducer = combineReducers({
   userDetails: userDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
   userList: userListReducer,
+  userDelete: userDeleteReducer,
   userScreens: userScreensReducer,
   userVideos: userVideosReducer,
   mailSend: mailSendReducer,

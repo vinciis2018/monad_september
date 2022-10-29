@@ -49,6 +49,7 @@ import {
   PleaBucket,
   CustomImages,
   NFT,
+  CustomCreate,
 } from "pages";
 import { Nav, Footer } from "components/common";
 
@@ -135,7 +136,7 @@ export const PublicRoutes = () => {
         <Route path="/pleaBucket" element={<PleaBucket />} />
 
         {/* <Route path="/wallet/:id/:wallet" element={<Wallet />} /> */}
-
+        <Route path="/customCreation/admin" element={<CustomCreate />} />
         <Route path="/nft/:id" element={<NFT />} />
 
         <Route path="*" element={<Page404 />} />
