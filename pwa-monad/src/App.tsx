@@ -20,12 +20,14 @@ import { ChakraProvider } from "@chakra-ui/react";
 import BasicStyle from "theme/basicStyle";
 import GlobalStyle from "theme/globalStyle";
 import { theme } from "theme/Theme.base";
+import { SEO } from "components/widgets/SEO";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <AppLayout>
+      <SEO />
       <ChakraProvider theme={theme}>
         <BasicStyle />
         <GlobalStyle />

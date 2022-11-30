@@ -373,7 +373,7 @@ export function ScreenEdit(props: any) {
                     <FormControl p="2" id="image">
                       <Select
                         color="black"
-                        placeholder="screen image"
+                        placeholder={image}
                         value={image}
                         onChange={(e) => setImage(e.target.value)}
                       >

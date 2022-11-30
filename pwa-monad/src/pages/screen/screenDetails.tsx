@@ -532,7 +532,9 @@ export function ScreenDetails(props: any) {
                               <AiTwotoneInfoCircle color="red" fontSize="10" />
                             </Box>
                             <Text fontSize="xs">
-                              {new Date(screen.lastActive).toLocaleString()}
+                              {screen.lastActive
+                                ? new Date(screen.lastActive).toLocaleString()
+                                : "not active"}
                             </Text>
                           </Flex>
                         ) : (
@@ -544,7 +546,9 @@ export function ScreenDetails(props: any) {
                               />
                             </Box>
                             <Text fontSize="xs">
-                              {new Date(screen.lastActive).toLocaleString()}
+                              {screen.lastActive
+                                ? new Date(screen.lastActive).toLocaleString()
+                                : "not active"}
                             </Text>
                           </Flex>
                         )}
@@ -552,7 +556,7 @@ export function ScreenDetails(props: any) {
                     </Flex>
                   </Box>
                   <hr />
-                  {openPlayData && (
+                  {openPlayData && screen.lastActive && screen.lastPlayed && (
                     <Box onClick={onOpen} p="2" shadow="card" rounded="lg">
                       <Text fontWeight="600">Screen Playlist Detail</Text>
                       <hr />
@@ -582,13 +586,6 @@ export function ScreenDetails(props: any) {
                         </Stack>
                       </SimpleGrid>
                       <hr />
-                      {/* <Text>
-                        {Math.floor(
-                          timeNow.getTime() -
-                            new Date(screen.lastActive).getTime()
-                        ) / 1000}{" "}
-                        seconds
-                      </Text> */}
                       <Modal size="xl" isOpen={isOpen} onClose={onClose}>
                         <ModalOverlay />
                         <ModalContent>

@@ -13,7 +13,9 @@ import {
   userVideosReducer,
 } from "Reducers/userReducers";
 import {
+  adCreditsGetReducer,
   walletCreateReducer,
+  walletDetailsReducer,
   walletEditReducer,
 } from "Reducers/walletReducers";
 import {
@@ -31,6 +33,7 @@ import {
   screenCreateReducer,
   screenDeleteReducer,
   screenDetailsReducer,
+  screenFewReducer,
   screenFlagReducer,
   screenLikeReducer,
   screenListReducer,
@@ -101,6 +104,8 @@ const reducer = combineReducers({
 
   walletCreate: walletCreateReducer,
   walletEdit: walletEditReducer,
+  walletDetails: walletDetailsReducer,
+  adCreditsGet: adCreditsGetReducer,
 
   mediaUpload: mediaUploadReducer,
   mediaGet: mediaGetReducer,
@@ -109,6 +114,7 @@ const reducer = combineReducers({
   videoFromImages: videoFromImagesReducer,
 
   screenList: screenListReducer,
+  screenFew: screenFewReducer,
   screenDetails: screenDetailsReducer,
   screenCreate: screenCreateReducer,
   screenUpdate: screenUpdateReducer,

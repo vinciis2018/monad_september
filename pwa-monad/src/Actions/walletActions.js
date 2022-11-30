@@ -1,8 +1,14 @@
 import Axios from "axios";
 import {
+  AD_CREDITS_FAIL,
+  AD_CREDITS_REQUEST,
+  AD_CREDITS_SUCCESS,
   WALLET_CREATE_FAIL,
   WALLET_CREATE_REQUEST,
   WALLET_CREATE_SUCCESS,
+  WALLET_DETAILS_FAIL,
+  WALLET_DETAILS_REQUEST,
+  WALLET_DETAILS_SUCCESS,
   WALLET_EDIT_FAIL,
   WALLET_EDIT_REQUEST,
   WALLET_EDIT_SUCCESS,
@@ -48,29 +54,67 @@ export const createWallet = (defWallet) => async (dispatch, getState) => {
 };
 
 // wallet update
-export const editWallet = (wallet) => async (dispatch, getState) => {
-  dispatch({
-    type: WALLET_EDIT_REQUEST,
-    payload: wallet,
-  });
+export const editWallet =
+  ({ walletAdd }) =>
+  async (dispatch, getState) => {
+    dispatch({
+      type: WALLET_EDIT_REQUEST,
+      payload: walletAdd,
+    });
+    const {
+      userSignin: { userInfo },
+    } = getState();
 
+    try {
+      const { data } = await Axios.put(
+        `${process.env.REACT_APP_BLINDS_SERVER}/api/wallet/${userInfo._id}`,
+        {
+          walletAdd,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+
+      dispatch({
+        type: WALLET_EDIT_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+
+      dispatch({
+        type: WALLET_EDIT_FAIL,
+        payload: message,
+      });
+    }
+  };
+
+// details wallet
+export const getWalletDetails = (walletId) => async (dispatch, getState) => {
+  dispatch({
+    type: WALLET_DETAILS_REQUEST,
+    payload: walletId,
+  });
   const {
     userSignin: { userInfo },
   } = getState();
-
   try {
-    const { data } = await Axios.put(
-      `${process.env.REACT_APP_BLINDS_SERVER}/api/wallet/${userInfo._id}`,
-      wallet,
+    const { data } = await Axios.get(
+      `${process.env.REACT_APP_BLINDS_SERVER}/api/wallet/${walletId}`,
       {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
         },
       }
     );
-
     dispatch({
-      type: WALLET_EDIT_SUCCESS,
+      type: WALLET_DETAILS_SUCCESS,
       payload: data,
     });
   } catch (error) {
@@ -80,7 +124,39 @@ export const editWallet = (wallet) => async (dispatch, getState) => {
         : error.message;
 
     dispatch({
-      type: WALLET_EDIT_FAIL,
+      type: WALLET_DETAILS_FAIL,
+      payload: message,
+    });
+  }
+};
+
+export const getAdCredits = () => async (dispatch, getState) => {
+  dispatch({
+    type: AD_CREDITS_REQUEST,
+  });
+  const {
+    userSignin: { userInfo },
+  } = getState();
+  try {
+    const { data } = await Axios.get(
+      `${process.env.REACT_APP_BLINDS_SERVER}/api/wallet/adcredit/ad`,
+      {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+    );
+    dispatch({
+      type: AD_CREDITS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({
+      type: AD_CREDITS_FAIL,
       payload: message,
     });
   }

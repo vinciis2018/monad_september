@@ -83,6 +83,27 @@ export function screenListReducer(
   }
 }
 
+export function screenFewReducer(
+  state = { loading: true, screens: [] },
+  action
+) {
+  switch (action.type) {
+    case SCREEN_LIST_REQUEST:
+      return { loading: true };
+    case SCREEN_LIST_SUCCESS:
+      return {
+        loading: false,
+        screens: action.payload.screens,
+        pages: action.payload.pages,
+        page: action.payload.page,
+      };
+    case SCREEN_LIST_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}
+
 export function screenDetailsReducer(state = { loading: true }, action) {
   switch (action.type) {
     case SCREEN_DETAILS_REQUEST:

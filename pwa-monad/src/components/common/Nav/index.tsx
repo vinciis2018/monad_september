@@ -87,7 +87,7 @@ export const Nav = () => {
   } = userSignin;
 
   React.useEffect(() => {
-    if (userInfo && getArweavePublicAddress() !== userInfo.defaultWallet) {
+    if (getArweavePublicAddress()) {
       dispatch(editWallet({ walletAdd: getArweavePublicAddress() }));
     }
 
@@ -97,8 +97,7 @@ export const Nav = () => {
       setWalletBalance(walletBalance);
       // });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, userInfo, isLoading, getArweavePublicAddress, walletBalance]);
+  }, [dispatch, userInfo, isLoading, walletBalance, getArweavePublicAddress]);
 
   const signoutHandler = () => {
     lockUser();

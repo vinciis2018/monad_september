@@ -499,7 +499,9 @@ export function UserProfile(props: any) {
                     </Text>
                     <IconButton
                       onClick={() =>
-                        navigate(`/wallet/${userInfo.defaultWallet}`)
+                        navigate(
+                          `/wallet/${userInfo._id}/${userInfo.defaultWallet}`
+                        )
                       }
                       bg="none"
                       icon={<AiOutlineRightCircle size="20px" color="black" />}

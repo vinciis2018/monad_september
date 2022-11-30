@@ -15,7 +15,7 @@ import {
   Flex,
   SimpleGrid,
 } from "@chakra-ui/react";
-import { listScreens } from "../../Actions/screenActions";
+import { fewScreens, listScreens } from "../../Actions/screenActions";
 import { listAllVideos } from "../../Actions/advertActions";
 import { triggerPort } from "services/utils";
 import {
@@ -46,6 +46,13 @@ export function Home(props: any) {
   const screenList = useSelector((state: any) => state.screenList);
   const { loading: loadingScreens, error: errorScreens, screens } = screenList;
 
+  const screenFew = useSelector((state: any) => state.screenList);
+  const {
+    loading: loadingScreensFew,
+    error: errorScreensFew,
+    screens: screensFew,
+  } = screenFew;
+
   const videoListAll = useSelector((state: any) => state.videoListAll);
   const {
     loading: loadingVideos,
@@ -60,6 +67,7 @@ export function Home(props: any) {
     }
 
     dispatch(listScreens({}));
+    dispatch(fewScreens({}));
     dispatch(listAllVideos());
 
     // dispatch(listTopMasters());
@@ -86,19 +94,19 @@ export function Home(props: any) {
       {/* Container */}
       <Box maxW="container.lg" mx="auto" pb="8">
         <Stack p="1" color="">
-          {loadingScreens || loadingVideos ? (
-            <HLoading loading={loadingScreens || loadingVideos} />
-          ) : errorScreens || errorVideos ? (
+          {loadingScreensFew || loadingVideos ? (
+            <HLoading loading={loadingScreensFew || loadingVideos} />
+          ) : errorScreensFew || errorScreens || errorVideos ? (
             <MessageBox variant="danger">
-              {errorScreens || errorVideos}
+              {errorScreens || errorVideos || errorScreensFew}
             </MessageBox>
           ) : (
             <Center width="100%">
-              {screens?.length === 0 && (
+              {screensFew?.length === 0 && (
                 <MessageBox>No Screen Found</MessageBox>
               )}
               <Carousel showArrows autoPlay showThumbs={false}>
-                {screens?.map((screen: any) => (
+                {screensFew?.map((screen: any) => (
                   <Box
                     key={screen?._id}
                     as={RouterLink}
@@ -235,7 +243,7 @@ export function Home(props: any) {
                 </Text>
               </Box>
             </Flex>
-            {screensModal ? (
+            {screensModal && !loadingScreens && !errorScreens ? (
               <SimpleGrid gap="4" columns={[1, 2]} px="1">
                 {screens?.map((screen: any) => (
                   <MotionFlex

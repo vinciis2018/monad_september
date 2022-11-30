@@ -87,6 +87,38 @@ export const listScreens =
     }
   };
 
+// few screens
+export const fewScreens =
+  ({
+    pageNumber = "",
+    master = "",
+    name = "",
+    screenCategory = "",
+    request = "",
+    min = 0,
+    max = 0,
+    rating = 0,
+  }) =>
+  async (dispatch) => {
+    dispatch({
+      type: SCREEN_LIST_REQUEST,
+    });
+    try {
+      const { data } = await Axios.get(
+        `${process.env.REACT_APP_BLINDS_SERVER}/api/screens/few/?pageNumber=${pageNumber}&master=${master}&name=${name}&category=${screenCategory}&min=${min}&max=${max}&rating=${rating}&request=${request}`
+      );
+      dispatch({
+        type: SCREEN_LIST_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: SCREEN_LIST_FAIL,
+        payload: error.message,
+      });
+    }
+  };
+
 // screen details
 export const detailsScreen = (screenId) => async (dispatch) => {
   dispatch({

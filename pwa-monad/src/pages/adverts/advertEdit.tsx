@@ -3,7 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import DateFnsUtils from "@date-io/date-fns"; // choose your lib
-import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import {
+  // DateTimePicker,
+  TimePicker,
+  DatePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
 import {
   IconButton as MiuiIconButton,
   InputAdornment,
@@ -31,7 +36,7 @@ import {
   Text,
   Button,
   IconButton,
-  ButtonGroup,
+  // ButtonGroup,
 } from "@chakra-ui/react";
 
 import {
@@ -42,8 +47,8 @@ import {
   AiOutlineEdit,
   AiOutlineUpload,
   AiOutlineCalendar,
-  AiOutlineInfoCircle,
-  AiOutlineCloseCircle,
+  // AiOutlineInfoCircle,
+  // AiOutlineCloseCircle,
   AiOutlineClockCircle,
 } from "react-icons/ai";
 
@@ -59,11 +64,11 @@ import {
   getAdvertGameDetails,
 } from "../../Actions/gameActions";
 import {
-  addCalenderData,
+  // addCalenderData,
   getScreenCalender,
-  bookSlot,
-  bookDay,
-  bookDaySlot,
+  // bookSlot,
+  // bookDay,
+  // bookDaySlot,
 } from "../../Actions/calendarActions";
 import { getVideoDetails, updateVideo } from "../../Actions/advertActions";
 import { ADVERT_UPDATE_RESET } from "../../Constants/advertConstants";
@@ -101,8 +106,6 @@ export function AdvertEdit(props: any) {
   const [brandName, setBrandName] = React.useState<any>("");
 
   const [modalVisible, setModalVisible] = React.useState<any>(false);
-  const [dayModalVisible, setDayModalVisible] = React.useState<any>(true);
-  const [timeModalVisible, setTimeModalVisible] = React.useState<any>(false);
 
   const [mediaUploadModal, setMediaUploadModal] = React.useState<any>(false);
   const [selectThumbnailPopup, setSelectThumbnailPopup] =
@@ -110,17 +113,11 @@ export function AdvertEdit(props: any) {
   const [selectAdvertPopup, setSelectAdvertPopup] = React.useState<any>(false);
   const [selectMediaPopup, setSelectMediaPopup] = React.useState<any>(false);
 
-  const [slotsModalOpen, setSlotsModalOpen] = React.useState<any>(false);
-  const [daySlotsModalOpen, setDaySlotsModalOpen] = React.useState<any>(false);
-
-  const [dateHere, setDateHere] = React.useState<any>(new Date());
-  const [startDateHere, setStartDateHere] = React.useState<any>(new Date());
-  const [endDateHere, setEndDateHere] = React.useState<any>(new Date());
+  const [slotDateHere, setSlotDateHere] = React.useState<any>(new Date());
+  const [startTime, setStartTime] = React.useState<any>(new Date());
+  const [endTime, setEndTime] = React.useState<any>(new Date());
 
   const [slotsPerDay, setSlotsPerDay] = React.useState<any>(1);
-
-  const [slotBooked, setSlotBooked] = React.useState<any>("");
-  const [dayBooked, setDayBooked] = React.useState<any>("");
 
   const userSignin = useSelector((state: any) => state.userSignin);
   const { loading: loadingUser, error: errorUser, userInfo } = userSignin;
@@ -128,8 +125,8 @@ export function AdvertEdit(props: any) {
   const videoDetails = useSelector((state: any) => state.videoDetails);
   const { loading: loadingVideo, error: errorVideo, video } = videoDetails;
 
-  // const screenDetails = useSelector((state: any) => state.screenDetails);
-  // const { loading: loadingScreen, error: errorScreen, screen } = screenDetails;
+  const screenDetails = useSelector((state: any) => state.screenDetails);
+  const { loading: loadingScreen, error: errorScreen, screen } = screenDetails;
 
   const myMedia = useSelector((state: any) => state.myMedia);
   const { loading: loadingMyMedia, error: errorMyMedia, medias } = myMedia;
@@ -233,14 +230,10 @@ export function AdvertEdit(props: any) {
 
     if (successSlotBooking) {
       window.alert("slot booked successfully");
-      setSlotsModalOpen(false);
-      setSlotBooked(false);
       dispatch(getScreenCalender(screenId));
     }
     if (successDayBooking) {
       window.alert("day booked successfully");
-      setDaySlotsModalOpen(false);
-      setDayBooked(false);
       dispatch(getScreenCalender(screenId));
     }
     if (successAdvertGameCreate) {
@@ -278,68 +271,6 @@ export function AdvertEdit(props: any) {
     navigate,
     redirect,
   ]);
-
-  const openDayModal = () => {
-    setTimeModalVisible(false);
-    setDayModalVisible(true);
-  };
-  const openTimeModal = () => {
-    setDayModalVisible(false);
-    setTimeModalVisible(true);
-  };
-
-  const dateTimeHandler = () => {
-    setDaySlotsModalOpen(false);
-    setSlotsModalOpen(true);
-    dispatch(
-      addCalenderData(video.screen, {
-        dateHere,
-        video,
-      })
-    );
-  };
-
-  const daySlotHandler = () => {
-    setSlotsModalOpen(false);
-    setDaySlotsModalOpen(true);
-    dispatch(
-      bookDaySlot(screenId, {
-        startDateHere,
-        endDateHere,
-        slotsPerDay,
-        video,
-      })
-    );
-  };
-
-  const slotBookingHandler = (slotId: any) => {
-    setSlotsModalOpen(true);
-    setSlotBooked(true);
-    window.alert("Confirm Booking slot");
-    dispatch(
-      bookSlot(screenId, slotId, {
-        dateHere,
-        slotBooked,
-        video,
-      })
-    );
-  };
-
-  const dayBookingHandler = (dayId: any) => {
-    setDaySlotsModalOpen(true);
-    setDayBooked(true);
-    window.alert("Confirm Booking day");
-    dispatch(
-      bookDay(screenId, dayId, {
-        startDateHere,
-        endDateHere,
-        daySlot: calenderDaySlotData.daySlot,
-        slotsPerDay,
-        dayBooked,
-        video,
-      })
-    );
-  };
 
   const videoUpdateHandler = (e: any) => {
     e.preventDefault();
@@ -438,10 +369,10 @@ export function AdvertEdit(props: any) {
   return (
     <Box px="2" py="20" color="black.500">
       <Box maxW="container.lg" mx="auto" pb="8">
-        {loadingUser ? (
-          <HLoading loading={loadingUser} />
-        ) : errorUser ? (
-          <MessageBox variant="danger">{errorUser}</MessageBox>
+        {loadingUser && loadingScreen ? (
+          <HLoading loading={loadingUser || loadingScreen} />
+        ) : errorUser && errorScreen ? (
+          <MessageBox variant="danger">{errorUser || errorScreen}</MessageBox>
         ) : (
           <Box>
             <Stack p="2" direction="row" justify="space-between">
@@ -976,16 +907,6 @@ export function AdvertEdit(props: any) {
                                           </option>
                                         )
                                       )}
-                                      {/* {artist?.nfts.map(
-                                        (nft: Record<string, any>) => (
-                                          <option
-                                            key={nft?.id}
-                                            value={`https://arweave.net/${nft?.id}`}
-                                          >
-                                            {nft?.id}
-                                          </option>
-                                        )
-                                      )} */}
                                     </Select>
                                   </>
                                 )}
@@ -1087,64 +1008,11 @@ export function AdvertEdit(props: any) {
                                           </option>
                                         )
                                       )}
-                                      {/* {artist?.nfts.map(
-                                        (nft: Record<string, any>) => (
-                                          <option
-                                            key={nft?.id}
-                                            value={`https://arweave.net/${nft?.id}`}
-                                          >
-                                            {nft?.id}
-                                          </option>
-                                        )
-                                      )} */}
                                     </Select>
                                   </>
                                 )}
                               </FormControl>
                             )}
-
-                            {selectMediaPopup &&
-                              (selectAdvertPopup || selectThumbnailPopup) && (
-                                <SimpleGrid gap="4" columns={[1, 2]}>
-                                  {/* {artist?.nfts.map(
-                                    (nft: Record<string, any>) => (
-                                      <Stack
-                                        rounded="md"
-                                        border="1px"
-                                        borderColor="gray.200"
-                                        key={nft?.id}
-                                      >
-                                        <Flex
-                                          align="center"
-                                          justify="space-between"
-                                          rounded="md"
-                                          p="1"
-                                        >
-                                          <Box p="1">
-                                            <Text
-                                              fontSize="md"
-                                              fontWeight="600"
-                                            >
-                                              {" "}
-                                              NFT ID
-                                            </Text>
-                                            <Text fontSize="xs">{nft?.id}</Text>
-                                          </Box>
-                                          <Box rounded="md" width="50px">
-                                            <NftMediaContainer nft={nft} />
-                                          </Box>
-                                        </Flex>
-                                      </Stack>
-                                    )
-                                  )} */}
-                                </SimpleGrid>
-                              )}
-                            <Button
-                              bgColor="violet.500"
-                              onClick={videoUpdateHandler}
-                            >
-                              Update Campaign Media
-                            </Button>
                           </Stack>
                         )}
                       </Stack>
@@ -1152,325 +1020,65 @@ export function AdvertEdit(props: any) {
                   </Stack>
                 ) : (
                   <Stack>
-                    <Flex justify="space-between">
-                      <ButtonGroup
-                        rounded="2xl"
-                        size="sm"
-                        isAttached
-                        spacing="0"
-                        borderColor="violet.500"
-                        variant="outline"
-                      >
-                        <Button
-                          rounded="2xl"
-                          fontSize="xs"
-                          color={
-                            !dayModalVisible && timeModalVisible
-                              ? "violet.500"
-                              : "white"
-                          }
-                          borderColor="violet.500"
-                          variant={
-                            !dayModalVisible && timeModalVisible
-                              ? "outline"
-                              : "solid"
-                          }
-                          bgGradient={
-                            !dayModalVisible && timeModalVisible
-                              ? "null"
-                              : "linear-gradient(to left, #BC78EC, #7833B6)"
-                          }
-                          onClick={openDayModal}
+                    {loadingScreenCalender ? (
+                      <HLoading loading={loadingScreenCalender} />
+                    ) : errorScreenCalender ? (
+                      <MessageBox variant="danger">
+                        {errorScreenCalender}
+                      </MessageBox>
+                    ) : (
+                      <SimpleGrid gap="2" columns={[2]}>
+                        <Box
+                          p="4"
+                          shadow="card"
+                          rounded="md"
+                          ref={React.createRef()}
                         >
-                          Day Slot
-                        </Button>
-                        <Button
-                          rounded="2xl"
-                          fontSize="xs"
-                          variant={
-                            dayModalVisible && !timeModalVisible
-                              ? "outline"
-                              : "solid"
-                          }
-                          borderColor="violet.500"
-                          color={
-                            dayModalVisible && !timeModalVisible
-                              ? "violet.500"
-                              : "white"
-                          }
-                          bgGradient={
-                            dayModalVisible && !timeModalVisible
-                              ? "null"
-                              : "linear-gradient(to left, #BC78EC, #7833B6)"
-                          }
-                          onClick={openTimeModal}
-                        >
-                          Time SLot
-                        </Button>
-                      </ButtonGroup>
-                      {/* <Text px="4" fontSize="xs" fontWeight="600">{video?.title}</Text> */}
-                    </Flex>
-                    {dayModalVisible && (
-                      <Stack shadow="card" rounded="md" p="10px">
-                        {loadingScreenCalender ? (
-                          <HLoading loading={loadingScreenCalender} />
-                        ) : errorScreenCalender ? (
-                          <MessageBox variant="danger">
-                            {errorScreenCalender}
-                          </MessageBox>
-                        ) : (
-                          <Box ref={React.createRef()}>
-                            <Text>
-                              {calender ? "Calender Set" : "Calender Not Set"}
-                            </Text>
-                            <SimpleGrid
-                              px="2"
-                              gap="2"
-                              columns={[1, 2]}
-                              align="center"
-                              justify="space-between"
-                            >
-                              <FormControl
-                                py="4"
-                                width="100%"
-                                align="center"
-                                id="startDateHere"
-                              >
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                  <DateTimePicker
-                                    inputVariant="outlined"
-                                    disablePast={true}
-                                    format="dd/MM/yyyy hh:mm"
-                                    // variant="dialog"
-                                    label="Select Slot Start Date"
-                                    value={startDateHere}
-                                    onChange={setStartDateHere}
-                                    InputProps={{
-                                      startAdornment: (
-                                        <InputAdornment position="start">
-                                          <MiuiIconButton>
-                                            <AiOutlineCalendar />
-                                          </MiuiIconButton>
-                                        </InputAdornment>
-                                      ),
-                                    }}
-                                  />
-                                </MuiPickersUtilsProvider>
-                              </FormControl>
-
-                              <FormControl
-                                py="4"
-                                width="100%"
-                                align="center"
-                                id="endDateHere"
-                              >
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                  <DateTimePicker
-                                    inputVariant="outlined"
-                                    disablePast={true}
-                                    format="dd/MM/yyyy hh:mm"
-                                    variant="dialog"
-                                    label="Select Slot End Date"
-                                    value={endDateHere}
-                                    onChange={setEndDateHere}
-                                    InputProps={{
-                                      startAdornment: (
-                                        <InputAdornment position="start">
-                                          <MiuiIconButton>
-                                            <AiOutlineCalendar />
-                                          </MiuiIconButton>
-                                        </InputAdornment>
-                                      ),
-                                    }}
-                                  />
-                                </MuiPickersUtilsProvider>
-                              </FormControl>
-                            </SimpleGrid>
-                            <Flex px="8" pt="8" pb="2" justify="space-around">
-                              <Slider
-                                id="slotsPerDay"
-                                min={1}
-                                max={4200}
-                                colorScheme="purple"
-                                aria-label="slotsPerDay"
-                                onChange={(val) => setSlotsPerDay(val)}
-                              >
-                                <SliderMark
-                                  value={slotsPerDay}
-                                  textAlign="center"
-                                  bg="purple.400"
-                                  color="white"
-                                  rounded="md"
-                                  mt="-10"
-                                  mx="-7"
-                                  p="2"
-                                >
-                                  {slotsPerDay}
-                                </SliderMark>
-                                <SliderTrack>
-                                  <SliderFilledTrack />
-                                </SliderTrack>
-                                <SliderThumb />
-                              </Slider>
-                            </Flex>
-                            <FormControl px="4" align="center" id="slotsPerDay">
-                              <Input
-                                id="slotsPerDay"
-                                align="center"
-                                justify="center"
-                                onChange={(e) => setSlotsPerDay(e.target.value)}
-                                placeholder={slotsPerDay}
-                                value={slotsPerDay}
-                                type="number"
-                                width="50%"
-                                size="lg"
-                              />
-                              <Flex p="2" align="center" justify="center">
-                                <Text px="1" fontSize="xs">
-                                  See details for these {slotsPerDay} slots
-                                </Text>
-                                <IconButton
-                                  onClick={daySlotHandler}
-                                  bg="none"
-                                  icon={
-                                    <AiOutlineInfoCircle
-                                      size="20px"
-                                      color="violet.500"
-                                    />
-                                  }
-                                  aria-label="show Details"
-                                ></IconButton>
-                              </Flex>
-                            </FormControl>
-                          </Box>
-                        )}
-                        {daySlotsModalOpen && (
-                          <Stack>
-                            <hr />
-                            {loadingDaySlotBook ? (
-                              <HLoading loading={loadingDaySlotBook} />
-                            ) : errorDaySlotBook ? (
-                              <MessageBox variant="danger">
-                                {errorDaySlotBook}
-                              </MessageBox>
-                            ) : (
-                              <Box p="4">
-                                <SimpleGrid columns={[2]} gap="2">
-                                  <Box
-                                    rounded="md"
-                                    shadow="card"
-                                    p="2"
-                                    align="center"
-                                  >
-                                    <Text fontSize="sm">Start Date </Text>
-                                    <Text fontSize="sm" fontWeight="600">
-                                      {new Date(
-                                        calenderDaySlotData.daySlot.date
-                                      ).toDateString()}
-                                      ,{" "}
-                                      {new Date(
-                                        calenderDaySlotData.daySlot.date
-                                      ).toLocaleTimeString()}
-                                    </Text>
-                                  </Box>
-                                  <Box
-                                    rounded="md"
-                                    shadow="card"
-                                    p="2"
-                                    align="center"
-                                  >
-                                    <Text fontSize="sm">End Date </Text>
-                                    <Text fontSize="sm" fontWeight="600">
-                                      {new Date(
-                                        calenderDaySlotData.daySlot.date
-                                      ).toDateString()}
-                                      ,{" "}
-                                      {new Date(
-                                        calenderDaySlotData.daySlot.date
-                                      ).toLocaleTimeString()}
-                                    </Text>
-                                  </Box>
-                                </SimpleGrid>
-                                <Text p="4" fontSize="sm">
-                                  SlotsAvailable :{" "}
-                                  <strong>
-                                    {calenderDaySlotData.slotsAvailable}
-                                  </strong>
-                                </Text>
-
-                                {!calenderDaySlotData.daySlot.slotsBooked
-                                  .isSlotBooked ? (
-                                  <Stack>
-                                    {loadingDayBooking ? (
-                                      <HLoading loading={loadingDayBooking} />
-                                    ) : errorDayBooking ? (
-                                      <MessageBox variant="danger">
-                                        {errorDayBooking}
-                                      </MessageBox>
-                                    ) : (
-                                      <Box>
-                                        <Text>
-                                          {bookedDay
-                                            ? "Day slot booked"
-                                            : "Day slot not booked"}
-                                        </Text>
-                                        <SimpleGrid gap="4" columns={[2]}>
-                                          <Button
-                                            variant="outline"
-                                            color="green.500"
-                                            width="100%"
-                                            fontSize="sm"
-                                            onClick={() =>
-                                              dayBookingHandler(
-                                                calenderDaySlotData.daySlot._id
-                                              )
-                                            }
-                                          >
-                                            <AiOutlineCheckCircle />
-                                          </Button>
-                                          <Button
-                                            variant="outline"
-                                            color="red.500"
-                                            width="100%"
-                                            fontSize="sm"
-                                            onClick={() =>
-                                              setDaySlotsModalOpen(
-                                                !daySlotsModalOpen
-                                              )
-                                            }
-                                          >
-                                            <AiOutlineCloseCircle />
-                                          </Button>
-                                        </SimpleGrid>
-                                      </Box>
-                                    )}
-                                  </Stack>
-                                ) : (
-                                  <Text fontSize="">
-                                    Already booked for the day
-                                  </Text>
-                                )}
-                              </Box>
-                            )}
-                          </Stack>
-                        )}
-                      </Stack>
-                    )}
-                    {timeModalVisible && (
-                      <Stack shadow="card" rounded="md" p="10px">
-                        <Box ref={React.createRef()}>
+                          <Text p="1" fontWeight="600" fontSize="md">
+                            {calender ? "Calender Set" : "Calender Not Set"}
+                          </Text>
+                          <hr />
                           <FormControl
-                            p="4"
+                            py="4"
                             width="100%"
                             align="center"
-                            id="dateHere"
+                            id="slotDateHere"
                           >
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                              <DateTimePicker
+                              <DatePicker
                                 inputVariant="outlined"
                                 disablePast={true}
-                                format="dd/MM/yyyy hh:mm"
+                                format="dd/MM/yyyy"
+                                // variant="dialog"
+                                label="Select Slot Date"
+                                value={slotDateHere}
+                                onChange={setSlotDateHere}
+                                InputProps={{
+                                  startAdornment: (
+                                    <InputAdornment position="start">
+                                      <MiuiIconButton>
+                                        <AiOutlineCalendar />
+                                      </MiuiIconButton>
+                                    </InputAdornment>
+                                  ),
+                                }}
+                              />
+                            </MuiPickersUtilsProvider>
+                          </FormControl>
+                          <FormControl
+                            py="4"
+                            width="100%"
+                            align="center"
+                            id="startTime"
+                          >
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                              <TimePicker
+                                inputVariant="outlined"
+                                // format="hh:mm:ss"
                                 variant="dialog"
+                                label="Select Slot Start Time"
+                                value={startTime}
+                                onChange={setStartTime}
                                 InputProps={{
                                   startAdornment: (
                                     <InputAdornment position="start">
@@ -1480,200 +1088,261 @@ export function AdvertEdit(props: any) {
                                     </InputAdornment>
                                   ),
                                 }}
-                                label="Select slot date"
-                                value={dateHere}
-                                onChange={setDateHere}
                               />
                             </MuiPickersUtilsProvider>
-                            <Flex pt="2" align="center" justify="center">
-                              <Text px="1" fontSize="xs">
-                                See details for this time slot
-                              </Text>
-                              <IconButton
-                                onClick={dateTimeHandler}
-                                bg="none"
-                                icon={
-                                  <AiOutlineInfoCircle
-                                    size="20px"
-                                    color="violet.500"
-                                  />
-                                }
-                                aria-label="show Details"
-                              ></IconButton>
-                            </Flex>
+                          </FormControl>
+
+                          <FormControl
+                            py="4"
+                            width="100%"
+                            align="center"
+                            id="endTime"
+                          >
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                              <TimePicker
+                                inputVariant="outlined"
+                                // format="hh:mm:ss"
+                                variant="dialog"
+                                label="Select Slot End Time"
+                                value={endTime}
+                                onChange={setEndTime}
+                                InputProps={{
+                                  startAdornment: (
+                                    <InputAdornment position="start">
+                                      <MiuiIconButton>
+                                        <AiOutlineClockCircle />
+                                      </MiuiIconButton>
+                                    </InputAdornment>
+                                  ),
+                                }}
+                              />
+                            </MuiPickersUtilsProvider>
+                          </FormControl>
+                          <Flex px="8" pt="8" pb="2" justify="space-around">
+                            <Slider
+                              id="slotsPerDay"
+                              min={1}
+                              max={Math.round(
+                                (endTime - startTime) / (1000 * 100)
+                              )}
+                              colorScheme="purple"
+                              aria-label="slotsPerDay"
+                              onChange={(val) => setSlotsPerDay(val)}
+                            >
+                              <SliderMark
+                                value={slotsPerDay}
+                                textAlign="center"
+                                bg="purple.400"
+                                color="white"
+                                rounded="md"
+                                mt="-10"
+                                // mx="-7"
+                                p="2"
+                              >
+                                {slotsPerDay}
+                              </SliderMark>
+                              <SliderTrack>
+                                <SliderFilledTrack />
+                              </SliderTrack>
+                              <SliderThumb />
+                            </Slider>
+                          </Flex>
+                          <FormControl px="8" align="center" id="slotsPerDay">
+                            <FormLabel textAlign="center" fontSize="xs">
+                              Number of impressions required
+                            </FormLabel>
+                            <Input
+                              id="slotsPerDay"
+                              align="center"
+                              justify="center"
+                              onChange={(e) => setSlotsPerDay(e.target.value)}
+                              placeholder={slotsPerDay}
+                              value={slotsPerDay}
+                              type="number"
+                              width="75%"
+                              size="lg"
+                            />
                           </FormControl>
                         </Box>
-                        {slotsModalOpen && (
-                          <Stack>
+                        <Box p="4" shadow="card" rounded="md">
+                          <Text
+                            p="1"
+                            textAlign="center"
+                            fontSize="md"
+                            fontWeight="600"
+                          >
+                            Slot Booking Details
+                          </Text>
+                          <hr />
+                          <Box
+                            rounded="lg"
+                            shadow="card"
+                            border="1px"
+                            borderColor="gray.300"
+                            m="2"
+                            px="4"
+                            py="2"
+                            align="start"
+                          >
+                            <Text fontSize="sm">Day Selected:</Text>
+                            <Text fontSize="sm" fontWeight="600">
+                              {slotDateHere.toString()}
+                            </Text>
+                          </Box>
+                          <SimpleGrid p="2" columns={[1, 3]} gap="2">
+                            <Box
+                              rounded="lg"
+                              shadow="card"
+                              border="1px"
+                              borderColor="gray.300"
+                              px="4"
+                              py="2"
+                              align="start"
+                            >
+                              <Text fontSize="sm">Start Time:</Text>
+                              <Text fontSize="lg" fontWeight="600">
+                                {startTime.toLocaleTimeString()}
+                              </Text>
+                            </Box>
+                            <Box
+                              rounded="lg"
+                              shadow="card"
+                              border="1px"
+                              borderColor="gray.300"
+                              px="4"
+                              py="2"
+                              align="start"
+                            >
+                              <Text fontSize="sm">End Time:</Text>
+                              <Text fontSize="lg" fontWeight="600">
+                                {endTime.toLocaleTimeString()}
+                              </Text>
+                            </Box>
+                            <Box
+                              rounded="lg"
+                              shadow="card"
+                              border="1px"
+                              borderColor="gray.300"
+                              px="4"
+                              py="2"
+                              align="start"
+                            >
+                              <Text fontSize="sm">Minutes:</Text>
+                              <Flex justify="space-between">
+                                <Text fontSize="lg" fontWeight="600">
+                                  {(endTime - startTime) / 1000 / 60}
+                                </Text>
+                                <Text pt="2" fontSize="xs">
+                                  = {(endTime - startTime) / 1000} sec
+                                </Text>
+                              </Flex>
+                            </Box>
+                          </SimpleGrid>
+                          <SimpleGrid p="2" columns={[1, 3]} gap="2">
+                            <Box
+                              rounded="lg"
+                              shadow="card"
+                              border="1px"
+                              borderColor="gray.300"
+                              px="4"
+                              py="2"
+                              align="start"
+                            >
+                              <Text fontSize="sm">Slots Chosen</Text>
+                              <Text fontSize="lg" fontWeight="600">
+                                {slotsPerDay}
+                              </Text>
+                            </Box>
+                            <Box
+                              rounded="lg"
+                              shadow="card"
+                              border="1px"
+                              borderColor="gray.300"
+                              px="4"
+                              py="2"
+                              align="start"
+                            >
+                              <Text fontSize="sm">Per Slot Cost</Text>
+                              <Flex justify="space-between">
+                                <Text fontSize="lg" fontWeight="600">
+                                  {screen?.rentPerSlot}
+                                </Text>
+                                <Text pt="2" fontSize="xs">
+                                  Ad Credits
+                                </Text>
+                              </Flex>
+                            </Box>
+                            <Box
+                              rounded="lg"
+                              shadow="card"
+                              border="1px"
+                              borderColor="gray.300"
+                              px="4"
+                              py="2"
+                              align="start"
+                            >
+                              <Text fontSize="sm">Total Cost</Text>
+                              <Flex justify="space-between">
+                                <Text fontSize="lg" fontWeight="600">
+                                  {slotsPerDay * screen?.rentPerSlot}
+                                </Text>
+                                <Text pt="2" fontSize="xs">
+                                  Ad Credits
+                                </Text>
+                              </Flex>
+                            </Box>
+                          </SimpleGrid>
+                          <hr />
+                          <Box
+                            rounded="lg"
+                            shadow="card"
+                            border="1px"
+                            borderColor="gray.300"
+                            m="2"
+                            px="4"
+                            py="2"
+                            align="start"
+                          >
+                            <Text p="1" fontSize="md" fontWeight="600">
+                              Slots Booking Summary
+                            </Text>
                             <hr />
-                            {loadingCalenderDataAdd ? (
-                              <HLoading loading={loadingCalenderDataAdd} />
-                            ) : errorCalenderDataAdd ? (
-                              <MessageBox variant="danger">
-                                {errorCalenderDataAdd}
-                              </MessageBox>
-                            ) : (
-                              <Stack>
-                                <SimpleGrid p="2" columns={[2]} gap="2">
-                                  <Box
-                                    rounded="md"
-                                    shadow="card"
-                                    p="2"
-                                    align="center"
-                                  >
-                                    <Text fontSize="sm">Preceeding Slot</Text>
-                                    {calenderSlotData?.viewSlots
-                                      ?.preceedingSlotAsked ? (
-                                      <Text fontWeight="600" fontSize="sm">
-                                        {new Date(
-                                          calenderSlotData.viewSlots.preceedingSlotAsked.slotTimeStart
-                                        ).toLocaleString()}{" "}
-                                        to{" "}
-                                        {new Date(
-                                          new Date(
-                                            calenderSlotData.viewSlots.preceedingSlotAsked.slotTimeStart
-                                          ).getTime() +
-                                            calenderSlotData.viewSlots
-                                              .preceedingSlotAsked.dataAttached
-                                              .duration *
-                                              1000
-                                        ).toLocaleString()}
-                                      </Text>
-                                    ) : (
-                                      <Text fontWeight="600" fontSize="sm">
-                                        Slots empty
-                                      </Text>
-                                    )}
-                                  </Box>
-                                  <Box
-                                    rounded="md"
-                                    shadow="card"
-                                    p="2"
-                                    align="center"
-                                  >
-                                    <Text fontSize="sm">Succeeding Slot</Text>
-                                    {calenderSlotData?.viewSlots
-                                      ?.succeedingSlotAsked ? (
-                                      <Text fontWeight="600" fontSize="sm">
-                                        {new Date(
-                                          calenderSlotData.viewSlots.succeedingSlotAsked.slotTimeStart
-                                        ).toLocaleString()}{" "}
-                                        to{" "}
-                                        {new Date(
-                                          new Date(
-                                            calenderSlotData.viewSlots.succeedingSlotAsked.slotTimeStart
-                                          ).getTime() +
-                                            calenderSlotData.viewSlots
-                                              .succeedingSlotAsked.dataAttached
-                                              .duration *
-                                              1000
-                                        ).toLocaleString()}
-                                      </Text>
-                                    ) : (
-                                      <Text fontWeight="600" fontSize="sm">
-                                        Slots empty
-                                      </Text>
-                                    )}
-                                  </Box>
-                                </SimpleGrid>
-                                <Box align="center">
-                                  <Text fontSize="xs">Asked Slot</Text>
-                                  {!calenderSlotData?.slotBooked && (
-                                    <Flex
-                                      P="2"
-                                      align="center"
-                                      justify="space-around"
-                                    >
-                                      <Text fontSize="sm" fontWeight="600">
-                                        {new Date(
-                                          calenderSlotData.slotBooked.slotTimeStart
-                                        ).toDateString()}
-                                        {/* {new Date(new Date(calenderSlotData.slotBooked.slotTimeStart).getTime() + calenderSlotData.slotBooked.dataAttached.duration*1000).toLocaleString()}{' '} */}
-                                      </Text>
-                                      <Text fontSize="sm" fontWeight="600">
-                                        {new Date(
-                                          calenderSlotData.slotBooked.slotTimeStart
-                                        ).toLocaleTimeString()}
-                                        {/* {new Date(new Date(calenderSlotData.slotBooked.slotTimeStart).getTime() + calenderSlotData.slotBooked.dataAttached.duration*1000).toLocaleString()}{' '} */}
-                                      </Text>
-                                    </Flex>
-                                  )}
-                                  {calenderSlotData?.slotBooked && (
-                                    <Stack>
-                                      <Flex
-                                        p="2"
-                                        align="center"
-                                        justify="space-around"
-                                      >
-                                        <Text fontSize="sm" fontWeight="600">
-                                          {new Date(
-                                            calenderSlotData.slotBooked.slotTimeStart
-                                          ).toDateString()}
-                                          {/* {new Date(new Date(calenderSlotData.slotBooked.slotTimeStart).getTime() + calenderSlotData.slotBooked.dataAttached.duration*1000).toLocaleString()}{' '} */}
-                                        </Text>
-                                        <Text fontSize="sm" fontWeight="600">
-                                          {new Date(
-                                            calenderSlotData.slotBooked.slotTimeStart
-                                          ).toLocaleTimeString()}
-                                          {/* {new Date(new Date(calenderSlotData.slotBooked.slotTimeStart).getTime() + calenderSlotData.slotBooked.dataAttached.duration*1000).toLocaleString()}{' '} */}
-                                        </Text>
-                                      </Flex>
-                                      {calenderSlotData.slotBooked
-                                        .isSlotBooked === false && (
-                                        <Stack>
-                                          {loadingSlotBooking ? (
-                                            <HLoading
-                                              loading={loadingSlotBooking}
-                                            />
-                                          ) : errorSlotBooking ? (
-                                            <MessageBox variant="danger">
-                                              {errorSlotBooking}
-                                            </MessageBox>
-                                          ) : (
-                                            <SimpleGrid
-                                              p="2"
-                                              gap="4"
-                                              columns={[2]}
-                                            >
-                                              <Button
-                                                variant="outline"
-                                                color="green.500"
-                                                width="100%"
-                                                fontSize="sm"
-                                                onClick={() =>
-                                                  slotBookingHandler(
-                                                    calenderSlotData.slotBooked
-                                                      ._id
-                                                  )
-                                                }
-                                              >
-                                                <AiOutlineCheckCircle />
-                                              </Button>
-                                              <Button
-                                                variant="outline"
-                                                color="red.500"
-                                                width="100%"
-                                                fontSize="sm"
-                                                onClick={() =>
-                                                  setSlotsModalOpen(
-                                                    !slotsModalOpen
-                                                  )
-                                                }
-                                              >
-                                                <AiOutlineCloseCircle />
-                                              </Button>
-                                            </SimpleGrid>
-                                          )}
-                                        </Stack>
-                                      )}
-                                    </Stack>
-                                  )}
-                                </Box>
-                              </Stack>
-                            )}
-                          </Stack>
-                        )}
-                      </Stack>
+                            <Text p="1" fontSize="sm">
+                              You need to pay{" "}
+                              <strong>
+                                {slotsPerDay * screen?.rentPerSlot} Ad Credits{" "}
+                              </strong>
+                              for running your ad campaign{" "}
+                              <strong>{slotsPerDay} times </strong>
+                              in{" "}
+                              <strong>
+                                {(
+                                  (endTime - startTime) /
+                                  1000 /
+                                  (60 * 60)
+                                ).toFixed(2)}{" "}
+                                Hours
+                              </strong>{" "}
+                              between{" "}
+                              <strong>{startTime.toLocaleTimeString()} </strong>
+                              and{" "}
+                              <strong>{endTime.toLocaleTimeString()} </strong>
+                              on <strong>{slotDateHere.toString()} </strong>.
+                            </Text>
+                            <hr />
+                            <Button
+                              mt="2"
+                              color="violet.500"
+                              variant="outline"
+                              width="100%"
+                              type="submit"
+                              // onClick={videoUpdateHandler}
+                            >
+                              Click to Pay
+                            </Button>
+                          </Box>
+                        </Box>
+                      </SimpleGrid>
                     )}
                     <Button
                       bgGradient="linear-gradient(to left, #BC78EC, #7833B6)"

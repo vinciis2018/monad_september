@@ -50,6 +50,9 @@ import {
   CustomImages,
   NFT,
   CustomCreate,
+  Scanner,
+  Payment,
+  Wallet,
 } from "pages";
 import { Nav, Footer } from "components/common";
 
@@ -79,6 +82,7 @@ export const PublicRoutes = () => {
         <Route path="/upload-confirm" element={<UploadConfirm />} />
         <Route path="/upload-success/:cid" element={<Success />} />
         <Route path="/customImages" element={<CustomImages />} />
+        <Route path="/scanner" element={<Scanner />} />
         {/* setting */}
         <Route path="/setting/wifi-test" element={<WifiTesting />} />
         <Route path="/setting/recovery" element={<Recovery />} />
@@ -135,9 +139,11 @@ export const PublicRoutes = () => {
 
         <Route path="/pleaBucket" element={<PleaBucket />} />
 
-        {/* <Route path="/wallet/:id/:wallet" element={<Wallet />} /> */}
+        <Route path="/wallet/:id/:wallet" element={<Wallet />} />
         <Route path="/customCreation/admin" element={<CustomCreate />} />
         <Route path="/nft/:id" element={<NFT />} />
+
+        <Route path="/payments" element={<Payment />} />
 
         <Route path="*" element={<Page404 />} />
       </Routes>

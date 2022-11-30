@@ -68,7 +68,7 @@ export function PinSuccess() {
         if (userInfo?.defaultWallet !== defWallet) {
           dispatch(
             editWallet({
-              defWallet,
+              walletAdd: defWallet,
             })
           );
         }
@@ -140,7 +140,7 @@ export function PinSuccess() {
               if (userInfo?.defaultWallet === undefined || null || "") {
                 dispatch(createWallet(defWallet));
               } else {
-                dispatch(editWallet(defWallet));
+                dispatch(editWallet({ walletAdd: defWallet }));
               }
               navigate("/upload");
             })

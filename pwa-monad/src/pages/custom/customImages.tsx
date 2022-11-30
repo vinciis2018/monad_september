@@ -46,7 +46,7 @@ export function CustomImages() {
   const [image, setImage] = useState<any>(null);
 
   const userSignin = useSelector((state: any) => state.userSignin);
-  const { oading: loadingUser, error: errorUser, userInfo } = userSignin;
+  const { loading: loadingUser, error: errorUser, userInfo } = userSignin;
 
   const myMedia = useSelector((state: any) => state.myMedia);
   const { loading: loadingMyMedia, error: errorMyMedia, medias } = myMedia;
